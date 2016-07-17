@@ -55,7 +55,7 @@ function f13_movie_shortcode( $atts, $content = null )
     'type' => '', // The type (movie, series, episode)
     'year' => '', // The year of the movie
     'plot', => 'full', // Return full or short plot
-    'rating' => 'true', // Return rotton tomatoes rating (true, false)
+    //'rating' => 'true', // Return rotton tomatoes rating (true, false)
   ), $atts ));
 
   // Set the cache name for this instance of the shortcode
@@ -119,6 +119,7 @@ function f13_movie_shortcode( $atts, $content = null )
       }
       // If the rating is set to false, set it, otherwise
       // set it to true
+      /*
       if ($rating == 'false')
       {
         $query .= 'tomatoes=false&';
@@ -127,10 +128,38 @@ function f13_movie_shortcode( $atts, $content = null )
       {
         $query .= 'tomatoes=true&'
       }
+      */
       // Get the movie data and store it in a variable
       $movie_data = f13_get_movie_data($query);
+      // Send the movie data to be formatted
+      $string = f13_format_movie_data($movie_data);
     }
+    // Return the generated string
+    return $string;
   }
+}
+
+/**
+ * A function to format the movie data into a widget
+ * @param  array  $data An array of movie data
+ * @return String       A formatted rich text string of movie data
+ */
+function f13_format_movie_data($data)
+{
+  // Create a variable to store the formatted rich text data
+  $rich_text = '';
+  // Check if a response was generated
+  if ($data['response'] == 'False' || $data['response'] == 'false')
+  {
+    // If a response was not generated warn the user
+    $rich_text .= 'The movie, show or episode you requested could not be found.';
+  }
+  else
+  {
+    // If a response was generated build the widget
+    
+  }
+
 }
 
 /**
