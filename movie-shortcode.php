@@ -79,6 +79,54 @@ function f13_movie_shortcode( $atts, $content = null )
     else
     {
       // Generate the result of the shortcode
+      if ($imdb != '' && $title != '')
+      {
+        // If both an IMDB ID and Title have been set, only use the IMDB ID
+        $title = '';
+      }
+      // Store the search query in a variable
+      $query = '';
+      // Create the query string
+      // Add the IMDB id if it is set
+      if ($imdb != '')
+      {
+        $query .= 'i=' . $imdb . '&';
+      }
+      // Add the title if it is set
+      if ($title != '')
+      {
+        $query .= 't=' . $title . '&';
+      }
+      // Add the type if it is set
+      if ($type != '')
+      {
+        $query .= 'type=' . $type . '&';
+      }
+      // Add the year if it is set and is a number
+      if ($year != '' && is_numeric($year))
+      {
+        $query .= 'y=' . $year . '&';
+      }
+      // If the plot attribute is set to short, set it short,
+      // otherwise set it to full
+      if ($plot == 'short')
+      {
+        $query .= 'plot=short&';
+      }
+      else
+      {
+        $query .= 'plot=full';
+      }
+      // If the rating is set to false, set it, otherwise
+      // set it to true
+      if ($rating == 'false')
+      {
+        $query .= 'tomatoes=false&';
+      }
+      else
+      {
+        $query .= 'tomatoes=true&'
+      }
     }
   }
 }
