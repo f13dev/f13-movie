@@ -264,6 +264,8 @@ function f13_format_movie_data($data)
       {
         $rich_text .= '<div class="f13-movie-awards">' $data['Awards'] . '</div>';
       }
+      // Rating data
+
     // Close the content container
     $rich_text .= '</div>';
   }
@@ -305,3 +307,28 @@ function f13_format_movie_data($data)
    // Return the results
    return $result;
  }
+
+/**
+ * A function to generate a star rating image
+ * @param  float  $aRating A float representing a rating out of 10
+ * @return String          A string of rich data showing a star rating
+ */
+function f13_get_movie_rating_stars($aRating)
+{
+  $string = '';
+  for ($x = 1; $x < $aRating; $x++ )
+  {
+    $string .= '<img src="' . plugin_dir_url( __FILE__ ) . 'img/star-full.png" />';
+  }
+  if (strpos($aRating, '.'))
+  {
+    $string .= '<img src="' . plugin_dir_url(__FILE__) . 'img/star-half.png" />';
+    $x++;
+  }
+  while ($x <= 10)
+  {
+    $string .= '<img src="' . plugin_dir_url(__FILE__) . 'img/star-empty.png" />';
+    $x++;
+  }
+  return $string;
+}
