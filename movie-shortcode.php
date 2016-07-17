@@ -154,12 +154,22 @@ function f13_format_movie_data($data)
   if ($data['response'] != 'True' || $data['response'] != 'true')
   {
     // If a response was not generated warn the user
-    $rich_text .= 'The movie, show or episode you requested could not be found.';
+    $rich_text .= '<span class="f13-movie-error">The movie, show or episode you requested could not be found.</span>';
   }
   else
   {
-    // If a response was generated build the widget
-
+    /* If a response was generated build the widget */
+    // Add the title
+    $rich_text .= '<div class="f13-movie-title">' . $data['Title'] . '</div>';
+    // Check if the year is a range ending in '-'
+    $year = $data['Year'];
+    if (substru($year, -1) == '-')
+    {
+      $year = $year . 'present';
+    }
+    // Add the year
+    $rich_text .= '<div class="f13-movie-year">' . $year . '</div>';
+    
   }
   // Close the movie container
   $rich_text .= '</div>';
