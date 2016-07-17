@@ -24,3 +24,25 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
+
+add_shortcode( 'movie', 'f13_movie_shortcode');
+
+/**
+* Function to handle the shortcode
+* @param  Array  $atts    The attributes set in the shortcode
+* @param  [type] $content [description]
+* @return String          The response of the shortcode
+*/
+function f13_movie_shortcode( $atts, $content = null )
+{
+    // Get the attributes
+    extract( shortcode_atts ( array (
+    'imdb' => '', // The IMDB movie ID
+    'title' => '', // The title of the movie
+    'type' => '', // The type (movie, series, episode)
+    'year' => '', // The year of the movie
+    'plot', => 'full', // Return full or short plot
+    'rating' => 'true', // Return rotton tomatoes rating (true, false)
+  ), $atts ));
+
+}
