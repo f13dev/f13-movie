@@ -54,7 +54,7 @@ function f13_movie_shortcode( $atts, $content = null )
     'title' => '', // The title of the movie
     'type' => '', // The type (movie, series, episode)
     'year' => '', // The year of the movie
-    'plot', => 'full', // Return full or short plot
+    'plot' => 'full', // Return full or short plot
     //'rating' => 'true', // Return rotton tomatoes rating (true, false)
   ), $atts ));
 
@@ -95,7 +95,7 @@ function f13_movie_shortcode( $atts, $content = null )
       // Add the title if it is set
       if ($title != '')
       {
-        $query .= 't=' . $title . '&';
+        $query .= 't=' . str_replace(' ', '%20', $title) . '&';
       }
       // Add the type if it is set
       if ($type != '')
@@ -151,7 +151,7 @@ function f13_format_movie_data($data)
   // Open the movie container
   $rich_text .= '<div class="f13-movie-container">';
   // Check if a response was generated
-  if ($data['response'] != 'True' || $data['response'] != 'true')
+  if ($data['Response'] != 'True')
   {
     // If a response was not generated warn the user
     $rich_text .= '<span class="f13-movie-error">The movie, show or episode you requested could not be found.</span>';
@@ -162,7 +162,7 @@ function f13_format_movie_data($data)
     // If the poster exists add it
     if ($data['Poster'] != '')
     {
-      $rich_text .= '<div class="f13-movie-poster" style="background:url(' . $data['Poster'] . ')"></div>';
+      $rich_text .= '<img src="' . $data['Poster'] . '" />';
     }
     // Open a content container
     $rich_text .= '<div class="f13-movie-content">';
@@ -173,7 +173,7 @@ function f13_format_movie_data($data)
       {
         $year = $data['Year'];
         // Check if the year is a range ending in '-'
-        if (substru($year, -1) == '-')
+        if (substr($year, -1) == '-')
         {
           $year = $year . 'present';
         }
@@ -191,7 +191,7 @@ function f13_format_movie_data($data)
         // Check if totalSeasons is set, if so add it
         if ($data['totalSeasons'] != '')
         {
-          $rich_text .= '<div class="f13-movie-totalSeasons">' . $data['totalSeasons']'</div>';
+          $rich_text .= '<div class="f13-movie-totalSeasons">' . $data['totalSeasons'] . '</div>';
         }
       }
       elseif ($data['Type'] == 'episode')
@@ -262,7 +262,7 @@ function f13_format_movie_data($data)
       // If awards is set, add it
       if ($data['Awards'] != 'N/A')
       {
-        $rich_text .= '<div class="f13-movie-awards">' $data['Awards'] . '</div>';
+        $rich_text .= '<div class="f13-movie-awards">' . $data['Awards'] . '</div>';
       }
       // Open a rating div
       $rich_text .= '<div class="f13-movie-rating">';
@@ -294,6 +294,8 @@ function f13_format_movie_data($data)
   }
   // Close the movie container
   $rich_text .= '</div>';
+
+  return $rich_text;
 
 }
 
