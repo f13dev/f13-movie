@@ -58,4 +58,27 @@ function f13_movie_shortcode( $atts, $content = null )
     'rating' => 'true', // Return rotton tomatoes rating (true, false)
   ), $atts ));
 
+  // Set the cache name for this instance of the shortcode
+  $cache = get_transient('f13movie' . md5(serialize($atts)));
+
+  if ($cache)
+  {
+      // If the cache exists, return it rather than re-creating it
+      return $cache;
+  }
+  else
+  {
+    // Check if a title or IMDB ID has been entered
+    if ($imdb == '' && $title == '')
+    {
+      // Notify the user that a Title or IMDB ID is required
+      $string = 'In order to use this shortcode either the \'imdb\' or \'title\' attributes must be set.<br/>
+      Shortcode example:<br />
+      [movie imdb=\'imdb_movie_id\'] or [movie title=\'A movie title\']';
+    }
+    else
+    {
+      // Generate the result of the shortcode
+    }
+  }
 }
