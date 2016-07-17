@@ -148,8 +148,10 @@ function f13_format_movie_data($data)
 {
   // Create a variable to store the formatted rich text data
   $rich_text = '';
+  // Open the movie container
+  $rich_text .= '<div class="f13-movie-container">';
   // Check if a response was generated
-  if ($data['response'] == 'False' || $data['response'] == 'false')
+  if ($data['response'] != 'True' || $data['response'] != 'true')
   {
     // If a response was not generated warn the user
     $rich_text .= 'The movie, show or episode you requested could not be found.';
@@ -157,8 +159,10 @@ function f13_format_movie_data($data)
   else
   {
     // If a response was generated build the widget
-    
+
   }
+  // Close the movie container
+  $rich_text .= '</div>';
 
 }
 
