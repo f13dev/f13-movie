@@ -264,8 +264,31 @@ function f13_format_movie_data($data)
       {
         $rich_text .= '<div class="f13-movie-awards">' $data['Awards'] . '</div>';
       }
-      // Rating data
-
+      // Open a rating div
+      $rich_text .= '<div class="f13-movie-rating">';
+        // Check if a valid rating is set
+        if (is_numeric($data['imdbRating']))
+        {
+          // If a valid rating is set, generate the stars image
+          $rich_text .= f13_get_movie_rating_stars($data['imdbRating']);
+          // If imdbVotes is a valid number, append the number of voters
+          if (is_numeric($data['imdbVotes']))
+          {
+            $rich_text .= ' from ' . $data['imdbVotes'] . ' votes';
+          }
+        }
+        else
+        {
+          // If no valid rating is set, generate the 0 stars image
+          $rich_text .= f13_get_movie_rating_stars(0.0);
+        }
+      // Close the rating div
+      $rich_text .= '</div>';
+      // If the IMDB id is set, add a link to the IMDB page
+      if ($data['imdbID'] != '' || $data['imdbID'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-imdb"><a href="http://www.imdb.com/title/' . $data['imdbID'] . '">View ' . $data['Title'] . ' on IMDB</a></div>';
+      }
     // Close the content container
     $rich_text .= '</div>';
   }
