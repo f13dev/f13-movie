@@ -25,7 +25,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
+// Register the shortcode
 add_shortcode( 'movie', 'f13_movie_shortcode');
+// Register the css
+add_action( 'wp_enqueue_scripts', 'f13_movie_shortcode_style');
+
+/**
+ * A function to register the stylesheet
+ * @return [type] [description]
+ */
+function f13_movie_shortcode_style()
+{
+    wp_register_style( 'f13movie-style', plugins_url('movie-shortcode.css', __FILE__) );
+    wp_enqueue_style( 'f13movie-style' );
+}
 
 /**
 * Function to handle the shortcode
