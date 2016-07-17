@@ -159,17 +159,113 @@ function f13_format_movie_data($data)
   else
   {
     /* If a response was generated build the widget */
-    // Add the title
-    $rich_text .= '<div class="f13-movie-title">' . $data['Title'] . '</div>';
-    // Check if the year is a range ending in '-'
-    $year = $data['Year'];
-    if (substru($year, -1) == '-')
+    // If the poster exists add it
+    if ($data['Poster'] != '')
     {
-      $year = $year . 'present';
+      $rich_text .= '<div class="f13-movie-poster" style="background:url(' . $data['Poster'] . ')"></div>';
     }
-    // Add the year
-    $rich_text .= '<div class="f13-movie-year">' . $year . '</div>';
-    
+    // Open a content container
+    $rich_text .= '<div class="f13-movie-content">';
+      // Add the title
+      $rich_text .= '<div class="f13-movie-title">' . $data['Title'] . '</div>';
+      // If the year is available add it
+      if ($data['Year'] != '')
+      {
+        $year = $data['Year'];
+        // Check if the year is a range ending in '-'
+        if (substru($year, -1) == '-')
+        {
+          $year = $year . 'present';
+        }
+        // Add the year
+        $rich_text .= '<div class="f13-movie-year">' . $year . '</div>';
+      }
+      // If the release date is available add it
+      if ($data['Released'] != '')
+      {
+        $rich_text .= '<div class="f13-movie-released">' . $data['Released'] . '</div>';
+      }
+      // If the response is a series, input series specific data
+      if ($data['Type'] == 'series')
+      {
+        // Check if totalSeasons is set, if so add it
+        if ($data['totalSeasons'] != '')
+        {
+          $rich_text .= '<div class="f13-movie-totalSeasons">' . $data['totalSeasons']'</div>';
+        }
+      }
+      elseif ($data['Type'] == 'episode')
+      {
+        // Open an episode div
+        $rich_text .= '<div class="f13-movie-episode">';
+          // If an episode number is set add it
+          if ($data['Episode'] != '')
+          {
+            $rich_text .= 'Episode ' . $data['Episode'] . ' ';
+          }
+          // If a season is set, add it
+          if ($data['Season'] != '')
+          {
+            $rich_text .= 'Season ' . $data['Season'];
+          }
+        // Close the episode div
+        $rich_text .= '</div>';
+      }
+      // If a plot is set, add it
+      if ($data['Plot'] != '')
+      {
+        $rich_text .= '<div class="f13-movie-plot">' . $data['Plot'] . '</div>';
+      }
+      // If a runtime is set, add it
+      if ($data['Runtime'] != '')
+      {
+        $rich_text .= '<div class="f13-movie-runtime">Runtime: ' . $data['Runtime'] . '</div>';
+      }
+      // If a genre is set, add it
+      if ($data['Genre'] != '')
+      {
+        $rich_text .= '<div class="f13-movie-genre">' . $data['Genre'] . '</div>';
+      }
+      // Open a crew div
+      $rich_text .= '<div class="f13-movie-crew">';
+        // If a director is set, add it
+        if ($data['Director'] != 'N/A')
+        {
+          $rich_text .= '<div class="f13-movie-director">Director: ' . $data['Director'] . '</div>';
+        }
+        // If a writer is set, add it
+        if ($data['Writer'] != 'N/A')
+        {
+          $rich_text .= '<div class="f13-movie-writer">Writer: ' . $data['Writer'] . '</div>';
+        }
+        // If actors is set, add it
+        if ($data['Actors'] != 'N/A')
+        {
+          $rich_text .= '<div class="f13-movie-actors">Actors: ' . $data['Actors'] . '</div>';
+        }
+      // Close the crew div
+      $rich_text .= '</div>';
+      // Create a localization div
+      $rich_text .= '<div class="f13-movie-localization">';
+        // If a language is set, add it
+        if ($data['Language'] != 'N/A')
+        {
+          $rich_text .= '<div class="f13-movie-language">Language: ' . $data['Language'] . '</div>';
+        }
+        // If a country is set, add it
+        if ($data['Country'] != 'N/A')
+        {
+          $rich_text .= '<div class="f13-movie-country">Country: ' . $data['Country'] . '</div>';
+        }
+      // Close the localization div
+      $rich_text .= '</div>';
+      // If awards is set, add it
+      if ($data['Awards'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-awards">' $data['Awards'] . '</div>';
+      }
+    // Close the content container
+    $rich_text .= '</div>';
   }
   // Close the movie container
   $rich_text .= '</div>';
