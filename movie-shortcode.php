@@ -127,6 +127,42 @@ function f13_movie_shortcode( $atts, $content = null )
       {
         $query .= 'tomatoes=true&'
       }
+      // Get the movie data and store it in a variable
+      $movie_data = f13_get_movie_data($query);
     }
   }
 }
+
+/**
+ * A function to retrieve the movie information from the
+ * Open Movie Databse
+ * @param  $query  The query string to be appended to the url.
+ * @return         A decoded array of information about the movie.
+ */
+ function f13_get_movie_data($query)
+ {
+   // Set the URL
+   $url = 'http://www.omdbapi.com/?' . $query;
+   // Start curl
+   $curl = curl_init();
+   // Set curl options
+   curl_setopt($curl, CURLOPT_URL, $url);
+   curl_setopt($curl, CURLOPT_HTTPGET, true);
+   // Set curl headers
+   curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+     'Content-Type: application/json',
+     'Accept: application/json'
+   ));
+   // Set the user agent
+   curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+   // Set curl to return the response, rather than print it
+   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+   // Get the results
+   $result = curl_exec($curl);
+   // Close the curl session
+   curl_close($curl);
+   // Decode the results
+   $result = json_decode($result, true);
+   // Return the results
+   return $result;
+ }
