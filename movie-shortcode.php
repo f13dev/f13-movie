@@ -64,13 +64,13 @@ function f13_movie_shortcode( $atts, $content = null )
 
   if ($cache)
   {
-      // If the cache exists, return it rather than re-creating it
+      // If the cache already exists, return it rather than re-creating it
       return $cache;
   }
   else
   {
     // Check if a title or IMDB ID has been entered
-    if (false)
+    if ($title == '' && $imdb == '')
     {
       // Notify the user that a Title or IMDB ID is required
       $string = 'In order to use this shortcode either the \'imdb\' or \'title\' attributes must be set.<br/>
