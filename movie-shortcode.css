@@ -10,6 +10,7 @@
   background: #efefef;
   border-radius: 10px;
   padding: 10px;
+  margin-bottom: 1em;
 }
 
 .f13-movie-error
@@ -68,9 +69,38 @@
 
 .f13-movie-plot
 {
-  border-top: 1px solid #ccc;
-  margin: 10px 0;
-  padding-top: 10px;
+
+}
+
+.f13-movie-stats
+{
+  width: 55%;
+  display: inline-block;
+
+}
+
+.f13-movie-image-container
+{
+  min-width: 200px;
+  height: auto;
+  display: inline-block;
+  width: 40%;
+  margin-right: 5%;
+  position: relative;
+  top: 0px;
+}
+
+.f13-movie-image-mid > img
+{
+  width: 40%;
+  height: auto;
+  float: left;
+  margin:10px;
+}
+
+.f13-movie-plot
+{
+  margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
 }
@@ -81,10 +111,31 @@
   font-weight: bold;
 }
 
-.f13-movie-runtime
+.f13-movie-language
 {
   display: inline-block;
-  padding-right: 10px;
+  margin-right: 10px;
+}
+
+.f13-movie-language > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-country
+{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.f13-movie-rating > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-country > span
+{
+  font-weight: bold;
 }
 
 .f13-movie-runtime > span
@@ -92,13 +143,13 @@
   font-weight: bold;
 }
 
-.f13-movie-genre
-{
-  display: inline-block;
-  padding-right: 10px;
-}
 
 .f13-movie-genre > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-awards > span
 {
   font-weight: bold;
 }

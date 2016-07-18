@@ -55,6 +55,7 @@ function f13_movie_shortcode( $atts, $content = null )
     'type' => '', // The type (movie, series, episode)
     'year' => '', // The year of the movie
     'plot' => 'full', // Return full or short plot
+    'cachetime' => '1440', // Cache timeout, default 24 hours
     //'rating' => 'true', // Return rotton tomatoes rating (true, false)
   ), $atts ));
 
@@ -200,9 +201,17 @@ function f13_format_movie_data($data)
     $rich_text .= '</div>';
 
 
-    // Open the image div
-    $rich_text .= '<div class="f13-movie-image-container">';
 
+    // If a plot is set, add it
+    if ($data['Plot'] != '')
+    {
+      $rich_text .= '<div class="f13-movie-plot">
+      <span>Plot: </span>' . $data['Plot'] . '</div>';
+    }
+
+
+    $rich_text .= '<table width="100%" class="f13-movie-table">';
+    $rich_text .= '<tr>';
 
       /* If a response was generated build the widget */
       // If the poster exists add it
@@ -237,52 +246,36 @@ function f13_format_movie_data($data)
         // the image.
         if (is_numeric($image_id) && $image_id != null)
         {
+          // Open the image div
+          $rich_text .= '<td style="width: 30%; vertical-align:top; padding-right: 10px;">';
           $rich_text .= '<img src="' . $image_url . '" />';
+          $rich_text .= '</td>';
+          // Close the image div
         }
       }
 
 
-    // Close the image div
-    $rich_text .= '</div>';
+      // Open a stats div
+
+      $rich_text .= '<td style="vertical-align: top">';
+
+        // If a runtime is set, add it
+        if ($data['Runtime'] != '')
+        {
+          $rich_text .= '<div class="f13-movie-runtime"><span>Runtime: </span>' . $data['Runtime'] . '</div>';
+        }
+        // If a genre is set, add it
+        if ($data['Genre'] != '')
+        {
+          $rich_text .= '<div class="f13-movie-genre"><span>Genre: </span>' . $data['Genre'] . '</div>';
+        }
+        // If awards is set, add it
+        if ($data['Awards'] != 'N/A')
+        {
+          $rich_text .= '<div class="f13-movie-awards"><span>Awards: </span>' . $data['Awards'] . '</div>';
+        }
 
 
-    // If a plot is set, add it
-    if ($data['Plot'] != '')
-    {
-      $rich_text .= '<div class="f13-movie-plot">
-      <span>Plot: </span>' . $data['Plot'] . '</div>';
-    }
-
-
-
-    // Open a stats div
-    $rich_text .= '<div class="f13-movie-stats">';
-
-
-
-      // If a runtime is set, add it
-      if ($data['Runtime'] != '')
-      {
-        $rich_text .= '<div class="f13-movie-runtime"><span>Runtime: </span>' . $data['Runtime'] . '</div>';
-      }
-      // If a genre is set, add it
-      if ($data['Genre'] != '')
-      {
-        $rich_text .= '<div class="f13-movie-genre"><span>Genre: </span>' . $data['Genre'] . '</div>';
-      }
-      // If awards is set, add it
-      if ($data['Awards'] != 'N/A')
-      {
-        $rich_text .= '<div class="f13-movie-awards"><span>Awards: </span>' . $data['Awards'] . '</div>';
-      }
-
-
-    // Close a stats div
-    $rich_text .= '</div>';
-
-
-    // Open a crew div
-    $rich_text .= '<div class="f13-movie-crew">';
       // If a director is set, add it
       if ($data['Director'] != 'N/A')
       {
@@ -298,8 +291,10 @@ function f13_format_movie_data($data)
       {
         $rich_text .= '<div class="f13-movie-actors"><span>Actors: </span>' . $data['Actors'] . '</div>';
       }
-    // Close the crew div
-    $rich_text .= '</div>';
+    // Close the movie-shortcode div
+    $rich_text .= '</td>';
+    $rich_text .= '</tr>';
+    $rich_text .= '</table>';
 
 
 
@@ -332,12 +327,15 @@ function f13_format_movie_data($data)
       if (is_numeric($data['imdbRating']))
       {
         // If a valid rating is set, generate the stars image
-        $rich_text .= f13_get_movie_rating_stars($data['imdbRating']);
+        $rich_text .= '<span>IMDB Rating: </span>';
         // If imdbVotes is a valid number, append the number of voters
-        if (is_numeric($data['imdbVotes']))
+        if (is_numeric(str_replace(',', '', $data['imdbVotes'])))
         {
-          $rich_text .= ' from ' . $data['imdbVotes'] . ' votes';
+          $rich_text .= ' ' . $data['imdbRating'] . '/10 from ' . $data['imdbVotes'] . ' votes';
         }
+        $rich_text .= '<div class="f13-movie-stars">';
+        $rich_text .= f13_get_movie_rating_stars($data['imdbRating']);
+        $rich_text .= '</div>';
       }
       else
       {
