@@ -151,18 +151,16 @@ function f13_format_movie_data($data)
     // If the poster exists add it
     if ($data['Poster'] != '')
     {
-      require_once(ABSPATH . 'wp-admin/includes/media.php');
-      require_once(ABSPATH . 'wp-admin/includes/file.php');
-      require_once(ABSPATH . 'wp-admin/includes/image.php');
       // Get the filenmae from the image URL
       $image_name = end(explode('/', $data['Poster']));
       // Find if the file already exists in attachments
       $image_id = f13_get_attachment_url($image_name);
       if ($image_id == null)
       {
-        // If the iamge doesn't already exist,
-        // scrape it and add to library, then get
-        // the image ID.
+        // Require files used to sideload
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
 
         // Attempt to sideload image
         media_sideload_image($data['Poster'], get_the_ID(), $data['Title']);
@@ -170,7 +168,6 @@ function f13_format_movie_data($data)
         $image_id = f13_get_attachment_url($image_name);
         // Get the image url
         $image_url = wp_get_attachment_url($image_id);
-        //$rich_text .= 'Image not found: ' . $image_name;
       }
       else
       {
@@ -181,7 +178,7 @@ function f13_format_movie_data($data)
       }
       // Check if the image id is a number, if so add
       // the image.
-      if (is_numeric($image_id))
+      if (is_numeric($image_id) && $image_id != null)
       {
         $rich_text .= '<img src="' . $image_url . '" />';
       }
