@@ -1,21 +1,30 @@
 .f13-movie-container
 {
-
+  background: #efefef;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .f13-movie-error
 {
-
+  color: #ff0000;
 }
 
 .f13-movie-title
 {
-
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .f13-movie-year
 {
+  display: inline-block;
+  padding-right: 10px;
+}
 
+.f13-movie-year > span
+{
+  font-weight: bold;
 }
 
 .f13-movie-content
@@ -25,12 +34,24 @@
 
 .f13-movie-released
 {
+  display: inline-block;
+  padding-right: 10px;
+}
 
+.f13-movie-released > span
+{
+  font-weight: bold;
 }
 
 .f13-movie-episode
 {
+  display: inline-block;
+  padding-right: 10px;
+}
 
+.f13-movie-episode > span
+{
+  font-weight: bold;
 }
 
 .f13-movie-totalSeasons
@@ -40,10 +61,70 @@
 
 .f13-movie-plot
 {
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
 
+.f13-movie-plot > span
+{
+  display: block;
+  font-weight: bold;
 }
 
 .f13-movie-runtime
 {
+  display: inline-block;
+  padding-right: 10px;
+}
 
+.f13-movie-runtime > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-genre
+{
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.f13-movie-genre > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-director
+{
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.f13-movie-director > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-writer
+{
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.f13-movie-writer > span
+{
+  font-weight: bold;
+}
+
+.f13-movie-actors
+{
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.f13-movie-actors > span
+{
+  font-weight: bold;
 }

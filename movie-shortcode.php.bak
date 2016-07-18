@@ -55,6 +55,7 @@ function f13_movie_shortcode( $atts, $content = null )
     'type' => '', // The type (movie, series, episode)
     'year' => '', // The year of the movie
     'plot' => 'full', // Return full or short plot
+    'apikey' => '', // The API key
     //'rating' => 'true', // Return rotton tomatoes rating (true, false)
   ), $atts ));
 
@@ -86,7 +87,7 @@ function f13_movie_shortcode( $atts, $content = null )
         $title = '';
       }
       // Store the search query in a variable
-      $query = 'http://www.omdbapi.com/?';
+      $query = '';
       // Create the query string
       // Add the IMDB id if it is set
       if ($imdb != '')
@@ -121,7 +122,7 @@ function f13_movie_shortcode( $atts, $content = null )
       // Get the movie data and store it in a variable
       $movie_data = f13_get_movie_data($query);
       // Send the movie data to be formatted
-      $string = f13_format_movie_data($movie_data);
+      $string = f13_format_movie_data($movie_data, $apikey);
     }
     // Return the generated string
     return $string;
@@ -133,7 +134,7 @@ function f13_movie_shortcode( $atts, $content = null )
  * @param  array  $data An array of movie data
  * @return String       A formatted rich text string of movie data
  */
-function f13_format_movie_data($data)
+function f13_format_movie_data($data, $apikey)
 {
   // Create a variable to store the formatted rich text data
   $rich_text = '';
@@ -149,34 +150,9 @@ function f13_format_movie_data($data)
   {
     /* If a response was generated build the widget */
     // If the poster exists add it
-    if ($data['Poster'] != '')
+    if ($data['Poster'] != '' && $apikey != '' && $data['imdbID'] != '')
     {
-      // Get the filenmae from the image URL
-      $image_name = end(explode('/', $data['Poster']));
-      // Find if the file already exists in attachments
-      $image_id = f13_get_attachment_url($image_name);
-      if ($image_id == null)
-      {
-        // If the iamge doesn't already exist,
-        // scrape it and add to library, then get
-        // the image ID.
-        $rich_text .= 'Image not found: ' . $image_name;
-      }
-      else
-      {
-        // If the image already exists, use the
-        // image id already obtained.
-        $image_url = wp_get_attachment_url($image_id);
-
-      }
-      // Check if the image id is a number, if so add
-      // the image.
-      if (is_numeric($image_id))
-      {
-        $rich_text .= '<img src="' . $image_url . '" />';
-      }
-
-      //$rich_text .= '<img src="http://api.themoviedb.org/3/movie/' . $data['imdbID'] . '/images?api_key=4ab9490f9e0b00758b0ff274dc2a2798' . $data['imdb'] . '&apikey=' . $apikey . '" />';
+      $rich_text .= '<img src="https://img.omdbapi.com/?i=' . $data['imdb'] . '&apikey=' . $apikey . '" />';
     }
     // Open a content container
     $rich_text .= '<div class="f13-movie-content">';
@@ -192,12 +168,12 @@ function f13_format_movie_data($data)
           $year = $year . 'present';
         }
         // Add the year
-        $rich_text .= '<div class="f13-movie-year"><span>Year: </span>' . $year . '</div>';
+        $rich_text .= '<div class="f13-movie-year">' . $year . '</div>';
       }
       // If the release date is available add it
       if ($data['Released'] != '')
       {
-        $rich_text .= '<div class="f13-movie-released"><span>Release date: </span>' . $data['Released'] . '</div>';
+        $rich_text .= '<div class="f13-movie-released">' . $data['Released'] . '</div>';
       }
       // If the response is a series, input series specific data
       if ($data['Type'] == 'series')
@@ -205,22 +181,22 @@ function f13_format_movie_data($data)
         // Check if totalSeasons is set, if so add it
         if ($data['totalSeasons'] != '')
         {
-          $rich_text .= '<div class="f13-movie-totalSeasons"><span>Totla seasons: </span>' . $data['totalSeasons'] . '</div>';
+          $rich_text .= '<div class="f13-movie-totalSeasons">' . $data['totalSeasons'] . '</div>';
         }
       }
       elseif ($data['Type'] == 'episode')
       {
         // Open an episode div
         $rich_text .= '<div class="f13-movie-episode">';
-          // If a season is set, add it
-          if ($data['Season'] != '')
-          {
-            $rich_text .= '<span>Season </span>' . $data['Season'] . ' ';
-          }
           // If an episode number is set add it
           if ($data['Episode'] != '')
           {
-            $rich_text .= '<span>Episode </span>' . $data['Episode'] . ' ';
+            $rich_text .= 'Episode ' . $data['Episode'] . ' ';
+          }
+          // If a season is set, add it
+          if ($data['Season'] != '')
+          {
+            $rich_text .= 'Season ' . $data['Season'];
           }
         // Close the episode div
         $rich_text .= '</div>';
@@ -228,35 +204,34 @@ function f13_format_movie_data($data)
       // If a plot is set, add it
       if ($data['Plot'] != '')
       {
-        $rich_text .= '<div class="f13-movie-plot">
-        <span>Plot: </span>' . $data['Plot'] . '</div>';
+        $rich_text .= '<div class="f13-movie-plot">' . $data['Plot'] . '</div>';
       }
       // If a runtime is set, add it
       if ($data['Runtime'] != '')
       {
-        $rich_text .= '<div class="f13-movie-runtime"><span>Runtime: </span>' . $data['Runtime'] . '</div>';
+        $rich_text .= '<div class="f13-movie-runtime">Runtime: ' . $data['Runtime'] . '</div>';
       }
       // If a genre is set, add it
       if ($data['Genre'] != '')
       {
-        $rich_text .= '<div class="f13-movie-genre"><span>Genre: </span>' . $data['Genre'] . '</div>';
+        $rich_text .= '<div class="f13-movie-genre">' . $data['Genre'] . '</div>';
       }
       // Open a crew div
       $rich_text .= '<div class="f13-movie-crew">';
         // If a director is set, add it
         if ($data['Director'] != 'N/A')
         {
-          $rich_text .= '<div class="f13-movie-director"><span>Director: </span>' . $data['Director'] . '</div>';
+          $rich_text .= '<div class="f13-movie-director">Director: ' . $data['Director'] . '</div>';
         }
         // If a writer is set, add it
         if ($data['Writer'] != 'N/A')
         {
-          $rich_text .= '<div class="f13-movie-writer"><span>Writer: </span>' . $data['Writer'] . '</div>';
+          $rich_text .= '<div class="f13-movie-writer">Writer: ' . $data['Writer'] . '</div>';
         }
         // If actors is set, add it
         if ($data['Actors'] != 'N/A')
         {
-          $rich_text .= '<div class="f13-movie-actors"><span>Actors: </span>' . $data['Actors'] . '</div>';
+          $rich_text .= '<div class="f13-movie-actors">Actors: ' . $data['Actors'] . '</div>';
         }
       // Close the crew div
       $rich_text .= '</div>';
@@ -265,19 +240,19 @@ function f13_format_movie_data($data)
         // If a language is set, add it
         if ($data['Language'] != 'N/A')
         {
-          $rich_text .= '<div class="f13-movie-language"><span>Language: </span>' . $data['Language'] . '</div>';
+          $rich_text .= '<div class="f13-movie-language">Language: ' . $data['Language'] . '</div>';
         }
         // If a country is set, add it
         if ($data['Country'] != 'N/A')
         {
-          $rich_text .= '<div class="f13-movie-country"><span>Country: </span>' . $data['Country'] . '</div>';
+          $rich_text .= '<div class="f13-movie-country">Country: ' . $data['Country'] . '</div>';
         }
       // Close the localization div
       $rich_text .= '</div>';
       // If awards is set, add it
       if ($data['Awards'] != 'N/A')
       {
-        $rich_text .= '<div class="f13-movie-awards"><span>Awards: </span>' . $data['Awards'] . '</div>';
+        $rich_text .= '<div class="f13-movie-awards">' . $data['Awards'] . '</div>';
       }
       // Open a rating div
       $rich_text .= '<div class="f13-movie-rating">';
@@ -320,8 +295,10 @@ function f13_format_movie_data($data)
  * @param  $query  The query string to be appended to the url.
  * @return         A decoded array of information about the movie.
  */
- function f13_get_movie_data($url)
+ function f13_get_movie_data($query)
  {
+   // Set the URL
+   $url = 'http://www.omdbapi.com/?' . $query;
    // Start curl
    $curl = curl_init();
    // Set curl options
@@ -369,20 +346,4 @@ function f13_get_movie_rating_stars($aRating)
     $x++;
   }
   return $string;
-}
-
-
-// retrieves the attachment ID from the filename
-function f13_get_attachment_url($image_url) {
-	global $wpdb;
-	$attachment = $wpdb->get_col($wpdb->prepare("SELECT post_id FROM {$wpdb->base_prefix}postmeta WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s;", '%' . $image_url ));
-  // Returns the attachment ID or null
-  if ($attachment[0] == null || $attachment[0] == '')
-  {
-    return null;
-  }
-  else
-  {
-    return $attachment[0];
-  }
 }
