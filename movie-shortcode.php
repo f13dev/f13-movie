@@ -147,46 +147,9 @@ function f13_format_movie_data($data)
   }
   else
   {
-    /* If a response was generated build the widget */
-    // If the poster exists add it
-    if ($data['Poster'] != '')
-    {
-      // Get the filenmae from the image URL
-      $image_name = end(explode('/', $data['Poster']));
-      // Find if the file already exists in attachments
-      $image_id = f13_get_attachment_url($image_name);
-      if ($image_id == null)
-      {
-        // Require files used to sideload
-        require_once(ABSPATH . 'wp-admin/includes/media.php');
-        require_once(ABSPATH . 'wp-admin/includes/file.php');
-        require_once(ABSPATH . 'wp-admin/includes/image.php');
+    // Open a head div
+    $rich_text .= '<div class=f13-movie-head>';
 
-        // Attempt to sideload image
-        media_sideload_image($data['Poster'], get_the_ID(), $data['Title']);
-        // Get the newly sideloaded image
-        $image_id = f13_get_attachment_url($image_name);
-        // Get the image url
-        $image_url = wp_get_attachment_url($image_id);
-      }
-      else
-      {
-        // If the image already exists, use the
-        // image id already obtained.
-        $image_url = wp_get_attachment_url($image_id);
-
-      }
-      // Check if the image id is a number, if so add
-      // the image.
-      if (is_numeric($image_id) && $image_id != null)
-      {
-        $rich_text .= '<img src="' . $image_url . '" />';
-      }
-
-      //$rich_text .= '<img src="http://api.themoviedb.org/3/movie/' . $data['imdbID'] . '/images?api_key=4ab9490f9e0b00758b0ff274dc2a2798' . $data['imdb'] . '&apikey=' . $apikey . '" />';
-    }
-    // Open a content container
-    $rich_text .= '<div class="f13-movie-content">';
       // Add the title
       $rich_text .= '<div class="f13-movie-title">' . $data['Title'] . '</div>';
       // If the year is available add it
@@ -232,12 +195,71 @@ function f13_format_movie_data($data)
         // Close the episode div
         $rich_text .= '</div>';
       }
-      // If a plot is set, add it
-      if ($data['Plot'] != '')
+
+    // Close the head div
+    $rich_text .= '</div>';
+
+
+    // Open the image div
+    $rich_text .= '<div class="f13-movie-image-container">';
+
+
+      /* If a response was generated build the widget */
+      // If the poster exists add it
+      if ($data['Poster'] != '')
       {
-        $rich_text .= '<div class="f13-movie-plot">
-        <span>Plot: </span>' . $data['Plot'] . '</div>';
+        // Get the filenmae from the image URL
+        $image_name = end(explode('/', $data['Poster']));
+        // Find if the file already exists in attachments
+        $image_id = f13_get_attachment_url($image_name);
+        if ($image_id == null)
+        {
+          // Require files used to sideload
+          require_once(ABSPATH . 'wp-admin/includes/media.php');
+          require_once(ABSPATH . 'wp-admin/includes/file.php');
+          require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+          // Attempt to sideload image
+          media_sideload_image($data['Poster'], get_the_ID(), $data['Title']);
+          // Get the newly sideloaded image
+          $image_id = f13_get_attachment_url($image_name);
+          // Get the image url
+          $image_url = wp_get_attachment_url($image_id);
+        }
+        else
+        {
+          // If the image already exists, use the
+          // image id already obtained.
+          $image_url = wp_get_attachment_url($image_id);
+
+        }
+        // Check if the image id is a number, if so add
+        // the image.
+        if (is_numeric($image_id) && $image_id != null)
+        {
+          $rich_text .= '<img src="' . $image_url . '" />';
+        }
       }
+
+
+    // Close the image div
+    $rich_text .= '</div>';
+
+
+    // If a plot is set, add it
+    if ($data['Plot'] != '')
+    {
+      $rich_text .= '<div class="f13-movie-plot">
+      <span>Plot: </span>' . $data['Plot'] . '</div>';
+    }
+
+
+
+    // Open a stats div
+    $rich_text .= '<div class="f13-movie-stats">';
+
+
+
       // If a runtime is set, add it
       if ($data['Runtime'] != '')
       {
@@ -248,71 +270,90 @@ function f13_format_movie_data($data)
       {
         $rich_text .= '<div class="f13-movie-genre"><span>Genre: </span>' . $data['Genre'] . '</div>';
       }
-      // Open a crew div
-      $rich_text .= '<div class="f13-movie-crew">';
-        // If a director is set, add it
-        if ($data['Director'] != 'N/A')
-        {
-          $rich_text .= '<div class="f13-movie-director"><span>Director: </span>' . $data['Director'] . '</div>';
-        }
-        // If a writer is set, add it
-        if ($data['Writer'] != 'N/A')
-        {
-          $rich_text .= '<div class="f13-movie-writer"><span>Writer: </span>' . $data['Writer'] . '</div>';
-        }
-        // If actors is set, add it
-        if ($data['Actors'] != 'N/A')
-        {
-          $rich_text .= '<div class="f13-movie-actors"><span>Actors: </span>' . $data['Actors'] . '</div>';
-        }
-      // Close the crew div
-      $rich_text .= '</div>';
-      // Create a localization div
-      $rich_text .= '<div class="f13-movie-localization">';
-        // If a language is set, add it
-        if ($data['Language'] != 'N/A')
-        {
-          $rich_text .= '<div class="f13-movie-language"><span>Language: </span>' . $data['Language'] . '</div>';
-        }
-        // If a country is set, add it
-        if ($data['Country'] != 'N/A')
-        {
-          $rich_text .= '<div class="f13-movie-country"><span>Country: </span>' . $data['Country'] . '</div>';
-        }
-      // Close the localization div
-      $rich_text .= '</div>';
       // If awards is set, add it
       if ($data['Awards'] != 'N/A')
       {
         $rich_text .= '<div class="f13-movie-awards"><span>Awards: </span>' . $data['Awards'] . '</div>';
       }
-      // Open a rating div
-      $rich_text .= '<div class="f13-movie-rating">';
-        // Check if a valid rating is set
-        if (is_numeric($data['imdbRating']))
-        {
-          // If a valid rating is set, generate the stars image
-          $rich_text .= f13_get_movie_rating_stars($data['imdbRating']);
-          // If imdbVotes is a valid number, append the number of voters
-          if (is_numeric($data['imdbVotes']))
-          {
-            $rich_text .= ' from ' . $data['imdbVotes'] . ' votes';
-          }
-        }
-        else
-        {
-          // If no valid rating is set, generate the 0 stars image
-          $rich_text .= f13_get_movie_rating_stars(0.0);
-        }
-      // Close the rating div
-      $rich_text .= '</div>';
-      // If the IMDB id is set, add a link to the IMDB page
-      if ($data['imdbID'] != '' || $data['imdbID'] != 'N/A')
-      {
-        $rich_text .= '<div class="f13-movie-imdb"><a href="http://www.imdb.com/title/' . $data['imdbID'] . '">View ' . $data['Title'] . ' on IMDB</a></div>';
-      }
-    // Close the content container
+
+
+    // Close a stats div
     $rich_text .= '</div>';
+
+
+    // Open a crew div
+    $rich_text .= '<div class="f13-movie-crew">';
+      // If a director is set, add it
+      if ($data['Director'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-director"><span>Director: </span>' . $data['Director'] . '</div>';
+      }
+      // If a writer is set, add it
+      if ($data['Writer'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-writer"><span>Writer: </span>' . $data['Writer'] . '</div>';
+      }
+      // If actors is set, add it
+      if ($data['Actors'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-actors"><span>Actors: </span>' . $data['Actors'] . '</div>';
+      }
+    // Close the crew div
+    $rich_text .= '</div>';
+
+
+
+
+
+    // Create a localization div
+    $rich_text .= '<div class="f13-movie-localization">';
+      // If a language is set, add it
+      if ($data['Language'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-language"><span>Language: </span>' . $data['Language'] . '</div>';
+      }
+      // If a country is set, add it
+      if ($data['Country'] != 'N/A')
+      {
+        $rich_text .= '<div class="f13-movie-country"><span>Country: </span>' . $data['Country'] . '</div>';
+      }
+    // Close the localization div
+    $rich_text .= '</div>';
+
+
+
+
+
+
+
+    // Open a rating div
+    $rich_text .= '<div class="f13-movie-rating">';
+      // Check if a valid rating is set
+      if (is_numeric($data['imdbRating']))
+      {
+        // If a valid rating is set, generate the stars image
+        $rich_text .= f13_get_movie_rating_stars($data['imdbRating']);
+        // If imdbVotes is a valid number, append the number of voters
+        if (is_numeric($data['imdbVotes']))
+        {
+          $rich_text .= ' from ' . $data['imdbVotes'] . ' votes';
+        }
+      }
+      else
+      {
+        // If no valid rating is set, generate the 0 stars image
+        $rich_text .= f13_get_movie_rating_stars(0.0);
+      }
+    // Close the rating div
+    $rich_text .= '</div>';
+
+
+    // If the IMDB id is set, add a link to the IMDB page
+    if ($data['imdbID'] != '' || $data['imdbID'] != 'N/A')
+    {
+      $rich_text .= '<div class="f13-movie-imdb"><a href="http://www.imdb.com/title/' . $data['imdbID'] . '">View ' . $data['Title'] . ' on IMDB</a></div>';
+    }
+
   }
   // Close the movie container
   $rich_text .= '</div>';

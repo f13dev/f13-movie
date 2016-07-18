@@ -1,3 +1,10 @@
+.f13-movie-head
+{
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
 .f13-movie-container
 {
   background: #efefef;
