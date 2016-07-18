@@ -70,7 +70,7 @@ function f13_movie_shortcode( $atts, $content = null )
   else
   {
     // Check if a title or IMDB ID has been entered
-    if ($imdb == '' && $title == '')
+    if (false)
     {
       // Notify the user that a Title or IMDB ID is required
       $string = 'In order to use this shortcode either the \'imdb\' or \'title\' attributes must be set.<br/>
@@ -80,44 +80,43 @@ function f13_movie_shortcode( $atts, $content = null )
     else
     {
       // Generate the result of the shortcode
-      // Check if a title or imdb ID has been entered
-      if ($imdb != '' && $title != '')
-      {
-        // If both an IMDB ID and Title have been set, only use the IMDB ID
-        $title = '';
-      }
+
       // Store the search query in a variable
       $query = 'http://www.omdbapi.com/?';
-      // Create the query string
-      // Add the IMDB id if it is set
+
+      // Check if a title or imdb ID has been entered
       if ($imdb != '')
       {
-        $query .= 'i=' . $imdb . '&';
-      }
-      // Add the title if it is set
-      if ($title != '')
-      {
-        $query .= 't=' . str_replace(' ', '%20', $title) . '&';
-      }
-      // Add the type if it is set
-      if ($type != '')
-      {
-        $query .= 'type=' . $type . '&';
-      }
-      // Add the year if it is set and is a number
-      if ($year != '' && is_numeric($year))
-      {
-        $query .= 'y=' . $year . '&';
-      }
-      // If the plot attribute is set to short, set it short,
-      // otherwise set it to full
-      if ($plot == 'short')
-      {
-        $query .= 'plot=short&';
+        // If both an IMDB ID and Title have been set, only use the IMDB ID
+        $query .= 'i=' . $imdb;
       }
       else
       {
-        $query .= 'plot=full';
+        // Add the title if it is set
+        if ($title != '')
+        {
+          $query .= 't=' . str_replace(' ', '%20', $title) . '&';
+        }
+        // Add the type if it is set
+        if ($type != '')
+        {
+          $query .= 'type=' . $type . '&';
+        }
+        // Add the year if it is set and is a number
+        if ($year != '' && is_numeric($year))
+        {
+          $query .= 'y=' . $year . '&';
+        }
+        // If the plot attribute is set to short, set it short,
+        // otherwise set it to full
+        if ($plot == 'short')
+        {
+          $query .= 'plot=short&';
+        }
+        else
+        {
+          $query .= 'plot=full';
+        }
       }
       // Get the movie data and store it in a variable
       $movie_data = f13_get_movie_data($query);
