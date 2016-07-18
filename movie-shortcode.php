@@ -124,6 +124,17 @@ function f13_movie_shortcode( $atts, $content = null )
       // Send the movie data to be formatted
       $string = f13_format_movie_data($movie_data);
     }
+    // Multiply the cache timeout by 60 to convert the time in minutes
+    // to the time in seconds
+    $cachetime = $cachetime * 60;
+    // If the cachetime is 0, set it to 1 for an instant timeout
+    if ($cachetime == 0)
+    {
+      $cachetime = 1;
+    }
+    $rich_text .= 'Cache time: ' . $cachetime;
+    // Set the cache
+    set_transient('f13movie' . md5(serialize($atts)), $string, $cachetime);
     // Return the generated string
     return $string;
   }
@@ -355,17 +366,6 @@ function f13_format_movie_data($data)
   }
   // Close the movie container
   $rich_text .= '</div>';
-
-  // Multiply the cache timeout by 60 to convert the time in minutes
-  // to the time in seconds
-  $cachetime = $cachetime * 60;
-  // If the cachetime is 0, set it to 1 for an instant timeout
-  if ($cachetime == 0)
-  {
-    $cachetime = 1;
-  }
-  // Set the cache
-  set_transient('wppis' . md5(serialize($atts)), $string, $cachetime);
   return $rich_text;
 
 }
