@@ -79,26 +79,26 @@ function f13_movie_shortcode( $atts, $content = null )
     }
     else
     {
-      // Generate the result of the shortcode
-
       // Store the search query in a variable
       $query = 'http://www.omdbapi.com/?';
 
-      // Check if a title or imdb ID has been entered
+      // Check if an IMDB ID has been entered
       if ($imdb != '')
       {
-        // If both an IMDB ID and Title have been set, only use the IMDB ID
+        // If an IMDB ID is present, add it to the query
+        // and send the string, no further attributes are
+        // required.
         $query .= 'i=' . $imdb;
       }
       else
       {
-        // Add the title if it is set
+        // Add the title to the query string
         if ($title != '')
         {
           $query .= 't=' . str_replace(' ', '%20', $title) . '&';
         }
-        // Add the type if it is set
-        if ($type != '')
+        // Add the type if it is set to an appropriate value
+        if ($type == 'move' || $type == 'series' || $type == 'episode')
         {
           $query .= 'type=' . $type . '&';
         }
@@ -126,12 +126,11 @@ function f13_movie_shortcode( $atts, $content = null )
     // Multiply the cache timeout by 60 to convert the time in minutes
     // to the time in seconds
     $cachetime = $cachetime * 60;
-    // If the cachetime is 0, set it to 1 for an instant timeout
+    // If the cachetime is 0, set it to 1 for an almost instant timeout
     if ($cachetime == 0)
     {
       $cachetime = 1;
     }
-    $rich_text .= 'Cache time: ' . $cachetime;
     // Set the cache
     set_transient('f13movie' . md5(serialize($atts)), $string, $cachetime);
     // Return the generated string
@@ -189,6 +188,7 @@ function f13_format_movie_data($data)
           $rich_text .= '<div class="f13-movie-totalSeasons"><span>Totla seasons: </span>' . $data['totalSeasons'] . '</div>';
         }
       }
+      // If the response is an episode, input episode specific data
       elseif ($data['Type'] == 'episode')
       {
         // Open an episode div
@@ -219,20 +219,22 @@ function f13_format_movie_data($data)
       <span>Plot: </span>' . $data['Plot'] . '</div>';
     }
 
-
+    // Create  a table to hold the image and stats
     $rich_text .= '<table width="100%" class="f13-movie-table">';
     $rich_text .= '<tr>';
 
-      /* If a response was generated build the widget */
       // If the poster exists add it
       if ($data['Poster'] != '')
       {
         // Get the filenmae from the image URL
         $image_name = end(explode('/', $data['Poster']));
         // Find if the file already exists in attachments
-        $image_id = f13_get_attachment_url($image_name);
+        $image_id = f13_get_attachment_id($image_name);
         if ($image_id == null)
         {
+          // If the image file does not already exist try and
+          // add it to the media library.
+
           // Require files used to sideload
           require_once(ABSPATH . 'wp-admin/includes/media.php');
           require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -256,17 +258,17 @@ function f13_format_movie_data($data)
         // the image.
         if (is_numeric($image_id) && $image_id != null)
         {
-          // Open the image div
+          // Create a table cell to put the image in
           $rich_text .= '<td style="width: 30%; vertical-align:top; padding-right: 10px;">';
+          // Add the image using the pre-found image url
           $rich_text .= '<img src="' . $image_url . '" />';
+          // Close the table cell
           $rich_text .= '</td>';
           // Close the image div
         }
       }
 
-
-      // Open a stats div
-
+      // Add a table cell to hold the movie stats
       $rich_text .= '<td style="vertical-align: top">';
 
         // If a runtime is set, add it
@@ -280,11 +282,10 @@ function f13_format_movie_data($data)
           $rich_text .= '<div class="f13-movie-genre"><span>Genre: </span>' . $data['Genre'] . '</div>';
         }
         // If awards is set, add it
-        if ($data['Awards'] != 'N/A')
+        if ($data['Awards'] != 'N/A' && $data['Awards'] != '')
         {
           $rich_text .= '<div class="f13-movie-awards"><span>Awards: </span>' . $data['Awards'] . '</div>';
         }
-
 
       // If a director is set, add it
       if ($data['Director'] != 'N/A')
@@ -301,14 +302,12 @@ function f13_format_movie_data($data)
       {
         $rich_text .= '<div class="f13-movie-actors"><span>Actors: </span>' . $data['Actors'] . '</div>';
       }
-    // Close the movie-shortcode div
+    // Close the table cell
     $rich_text .= '</td>';
+    // Close the table row
     $rich_text .= '</tr>';
+    // Close the table
     $rich_text .= '</table>';
-
-
-
-
 
     // Create a localization div
     $rich_text .= '<div class="f13-movie-localization">';
@@ -325,26 +324,23 @@ function f13_format_movie_data($data)
     // Close the localization div
     $rich_text .= '</div>';
 
-
-
-
-
-
-
     // Open a rating div
     $rich_text .= '<div class="f13-movie-rating">';
       // Check if a valid rating is set
       if (is_numeric($data['imdbRating']))
       {
-        // If a valid rating is set, generate the stars image
+        // If a valid rating is set add the IMDB rating title
         $rich_text .= '<span>IMDB Rating: </span>';
         // If imdbVotes is a valid number, append the number of voters
         if (is_numeric(str_replace(',', '', $data['imdbVotes'])))
         {
           $rich_text .= ' ' . $data['imdbRating'] . '/10 from ' . $data['imdbVotes'] . ' votes';
         }
+        // Open the stars div
         $rich_text .= '<div class="f13-movie-stars">';
+        // Show the IMDB star rating
         $rich_text .= f13_get_movie_rating_stars($data['imdbRating']);
+        // Close the stars div
         $rich_text .= '</div>';
       }
       else
@@ -355,18 +351,15 @@ function f13_format_movie_data($data)
     // Close the rating div
     $rich_text .= '</div>';
 
-
-    // If the IMDB id is set, add a link to the IMDB page
+    // If the IMDB id is present, add a link to the IMDB page
     if ($data['imdbID'] != '' || $data['imdbID'] != 'N/A')
     {
       $rich_text .= '<div class="f13-movie-imdb"><a href="http://www.imdb.com/title/' . $data['imdbID'] . '">View ' . $data['Title'] . ' on IMDB</a></div>';
     }
-
   }
   // Close the movie container
   $rich_text .= '</div>';
   return $rich_text;
-
 }
 
 /**
@@ -428,16 +421,19 @@ function f13_get_movie_rating_stars($aRating)
 
 
 // retrieves the attachment ID from the filename
-function f13_get_attachment_url($image_url) {
+function f13_get_attachment_id($file_name) {
 	global $wpdb;
-	$attachment = $wpdb->get_col($wpdb->prepare("SELECT post_id FROM {$wpdb->base_prefix}postmeta WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s;", '%' . $image_url ));
-  // Returns the attachment ID or null
+  // Search the database for an attachment ending with the filename
+	$attachment = $wpdb->get_col($wpdb->prepare("SELECT post_id FROM {$wpdb->base_prefix}postmeta WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s;", '%' . $file_name ));
+  // Returns the post ID or null
   if ($attachment[0] == null || $attachment[0] == '')
   {
+    // If the post ID is not valid return null
     return null;
   }
   else
   {
+    // Otherwise return the valid post ID
     return $attachment[0];
   }
 }
