@@ -227,7 +227,8 @@ function f13_format_movie_data($data)
       if ($data['Poster'] != '')
       {
         // Get the filenmae from the image URL
-        $image_name = end(explode('/', $data['Poster']));
+        $image_name = explode('/', $data['Poster']);
+        $image_name = end($image_name);
         // Find if the file already exists in attachments
         $image_id = f13_get_attachment_id($image_name);
         if ($image_id == null)
