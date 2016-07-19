@@ -244,7 +244,7 @@ function f13_format_movie_data($data)
           // Attempt to sideload image
           media_sideload_image($data['Poster'], get_the_ID(), $data['Title']);
           // Get the newly sideloaded image
-          $image_id = f13_get_attachment_url($image_name);
+          $image_id = f13_get_attachment_id($image_name);
           // Get the image url
           $image_url = wp_get_attachment_url($image_id);
         }
