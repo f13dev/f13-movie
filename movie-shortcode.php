@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 // Register the shortcode
-add_shortcode( 'f13movie', 'f13_movie_shortcode');
+add_shortcode( 'movie', 'f13_movie_shortcode');
 // Register the css
 add_action( 'wp_enqueue_scripts', 'f13_movie_shortcode_style');
 
