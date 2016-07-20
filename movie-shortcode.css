@@ -74,28 +74,29 @@
 
 .f13-movie-stats
 {
-  width: 55%;
-  display: inline-block;
-
+  height: auto;
 }
 
-.f13-movie-image-container
+.f13-movie-stats > span
 {
-  min-width: 200px;
-  height: auto;
   display: inline-block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.f13-movie-stats > img
+{
+  display: block;
+  float: left;
+  padding: 10px;
   width: 40%;
-  margin-right: 5%;
-  position: relative;
-  top: 0px;
+  min-width: 300px;
 }
 
 .f13-movie-image-mid > img
 {
-  width: 40%;
+  width: 100%;
   height: auto;
-  float: left;
-  margin:10px;
 }
 
 .f13-movie-plot

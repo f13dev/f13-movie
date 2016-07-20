@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 // Register the shortcode
-add_shortcode( 'movie', 'f13_movie_shortcode');
+add_shortcode( 'f13movie', 'f13_movie_shortcode');
 // Register the css
 add_action( 'wp_enqueue_scripts', 'f13_movie_shortcode_style');
 
@@ -219,9 +219,9 @@ function f13_format_movie_data($data)
       <span>Plot: </span>' . $data['Plot'] . '</div>';
     }
 
-    // Create  a table to hold the image and stats
-    $rich_text .= '<table width="100%" class="f13-movie-table">';
-    $rich_text .= '<tr>';
+
+    // Open a stats div
+    $rich_text .= '<div class="f13-movie-stats">';
 
       // If the poster exists add it
       if ($data['Poster'] != '')
@@ -259,56 +259,52 @@ function f13_format_movie_data($data)
         // the image.
         if (is_numeric($image_id) && $image_id != null)
         {
-          // Create a table cell to put the image in
-          $rich_text .= '<td style="width: 30%; vertical-align:top; padding-right: 10px;">';
-          // Add the image using the pre-found image url
-          $rich_text .= '<img src="' . $image_url . '" />';
-          // Close the table cell
-          $rich_text .= '</td>';
-          // Close the image div
+
+            // Add the image using the pre-found image url
+            $rich_text .= '<img src="' . $image_url . '" />';
+
         }
       }
 
-      // Add a table cell to hold the movie stats
-      $rich_text .= '<td style="vertical-align: top">';
+
 
         // If a runtime is set, add it
         if ($data['Runtime'] != '')
         {
-          $rich_text .= '<div class="f13-movie-runtime"><span>Runtime: </span>' . $data['Runtime'] . '</div>';
+          $rich_text .= '<span>Runtime: </span>' . $data['Runtime'] . '<br/>';
         }
         // If a genre is set, add it
         if ($data['Genre'] != '')
         {
-          $rich_text .= '<div class="f13-movie-genre"><span>Genre: </span>' . $data['Genre'] . '</div>';
+          $rich_text .= '<span>Genre: </span>' . $data['Genre'] . '<br />';
         }
         // If awards is set, add it
         if ($data['Awards'] != 'N/A' && $data['Awards'] != '')
         {
-          $rich_text .= '<div class="f13-movie-awards"><span>Awards: </span>' . $data['Awards'] . '</div>';
+          $rich_text .= '<span>Awards: </span>' . $data['Awards'] . '<br />';
         }
 
       // If a director is set, add it
       if ($data['Director'] != 'N/A')
       {
-        $rich_text .= '<div class="f13-movie-director"><span>Director: </span>' . $data['Director'] . '</div>';
+        $rich_text .= '<span>Director: </span>' . $data['Director'] . '<br />';
       }
       // If a writer is set, add it
       if ($data['Writer'] != 'N/A')
       {
-        $rich_text .= '<div class="f13-movie-writer"><span>Writer: </span>' . $data['Writer'] . '</div>';
+        $rich_text .= '<span>Writer: </span>' . $data['Writer'] . '<br />';
       }
       // If actors is set, add it
       if ($data['Actors'] != 'N/A')
       {
-        $rich_text .= '<div class="f13-movie-actors"><span>Actors: </span>' . $data['Actors'] . '</div>';
+        $rich_text .= '<span>Actors: </span>' . $data['Actors'] . '<br />';
       }
-    // Close the table cell
-    $rich_text .= '</td>';
-    // Close the table row
-    $rich_text .= '</tr>';
-    // Close the table
-    $rich_text .= '</table>';
+
+    // Close the stats div
+    $rich_text .= '</div>';
+
+    // Clear floating divs
+    $rich_text .= '<br style="clear:both" />';
 
     // Create a localization div
     $rich_text .= '<div class="f13-movie-localization">';
