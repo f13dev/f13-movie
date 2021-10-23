@@ -1,0 +1,23 @@
+.f13-movies-container { padding: 10px 5px; border: 1px solid #ccc; background: #f6f6f6; margin-bottom: 10px; }
+.f13-movies-title { font-size: 30px; text-align: center; border-bottom: 1px solid #ccc; margin: -10px -5px 5px; padding: 5px; }
+.f13-movies-head { display: flex; flex-wrap: wrap; }
+.f13-movies-poster, .f13-movies-plot { min-width: 200px; width: 50%; flex-basis: auto; flex-grow: 1; padding: 10px; box-sizing: border-box; }
+.f13-movies-poster img { width: 100%; height: auto; }
+.f13-movies-stats { border: 1px solid #ccc; padding: 10px; background: #fff; margin: 10px; }
+.f13-movies-stats summary { padding: 10px; text-align: center; cursor: pointer; margin: -10px; }
+.f13-movies-stats:hover { border: 1px solid #222; }
+.f13-movies-stats summary a { pointer-events: none; }
+.f13-movies-stats summary:after { content: '\021B4'; float: right; }
+.f13-movies-stats[open] summary:after {content: '\021B5'; }
+.f13-movies-ratings { padding: 10px; margin: 0 10px 5px; background: #fff; border: 1px solid #ccc; display: flex; flex-wrap: wrap; }
+.f13-movies-rating { flex-basis: auto; flex-grow: 1; width: 50%; min-width: 250px; }
+.f13-movies-stat { box-sizing: border-box; }
+.f13-movies-notice { font-size: 0.7em; text-align: center; margin-top:10px; }
+.f13-movie-stars .dashicons { color: #B49000; }
+.f13-movies-stats-inner { background: #f6f6f6; border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+.f13-movies-plot div { padding: 10px; background: #fff; border: 1px solid #ccc; height: 100%; }
+.f13-movies-stats[open] summary ~ * { animation: sweep .5s ease-in-out; }
+@keyframes sweep {
+    0% {opacity: 0; margin-left: -10px}
+    100%  {opacity: 1; margin-left: 0px}
+}
