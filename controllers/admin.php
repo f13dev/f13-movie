@@ -35,7 +35,12 @@ class Admin
 
     public function f13_settings()
     {
-        $v = new \F13\Movies\Views\Admin();
+        $response = wp_remote_get('https://f13.dev/wp-json/v1/f13-plugins');
+        $data     = json_decode(wp_remote_retrieve_body( $response ));
+
+        $v = new \F13\Movies\Views\Admin(array(
+            'data' => $data,
+        ));
 
         echo $v->f13_settings();
     }

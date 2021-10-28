@@ -39,13 +39,31 @@ class Admin
 
      public function f13_settings()
     {
-        $response = wp_remote_get('https://pluginlist.f13.dev');
-        $body     = wp_remote_retrieve_body( $response );
         $v = '<div class="wrap">';
             $v .= '<h1>'.$this->label_plugins_by_f13.'</h1>';
-            $v .= '<div id="f13-plugins">'.$body.'</div>';
-            $v .= '<a href="'.admin_url('plugin-install.php').'?s=f13dev&tab=search&type=author">'.$this->label_all_wordpress_plugins.'</a>';
-        $v .= '</div>';
+            foreach ($this->data->results as $item) {
+                $v .= '<div class="plugin-card plugin-card-f13-toc" style="margin-left: 0; width: 100%;">';
+                    $v .= '<div class="plugin-card-top">';
+                        $v .= '<div class="name column-name">';
+                            $v .= '<h3>';
+                                $v .= '<a href="plugin-install.php?s='.urlencode('"'.$item->search_term.'"').'&tab=search&type=term" class="thickbox open-plugin-details-modal">';
+                                    $v .= $item->title;
+                                    $v .= '<img src="'.$item->image.'" class="plugin-icon" alt="">';
+                                $v .= '</a>';
+                            $v .= '</h3>';
+                        $v .= '</div>';
+                        $v .= '<div class="desc column-description">';
+                            $v .= '<p>';
+                                $v .= $item->description;
+                            $v .= '</p>';
+                            $v .= '.<p class="authors">';
+                                $v .= ' <cite>By <a href="'.$item->url.'">Jim Valentine - f13dev</a></cite>';
+                            $v .= '</p>';
+                        $v .= '</div>';
+                    $v .= '</div>';
+                $v .= '</div>';
+            }
+        $v .= '<div>';
 
         return $v;
     }
