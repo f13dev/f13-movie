@@ -5,7 +5,7 @@ Do you blog about movies? It can be tedious adding movie information manually, n
 * Developer: [F13Dev](http://f13dev.com)
 * Tags: movie, tv show, episode, embed, shortcode, imdb, omdb
 * Requires: WordPress 3.0.1 and up
-* Tested to: WordPress 4.5.3
+* Tested to: WordPress 4.8.1
 * License: [GPLv3 or later](http://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Description
