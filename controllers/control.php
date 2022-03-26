@@ -61,11 +61,14 @@ class Control
             'plot' => 'full',
             'cachetime' => '1440',
             'information' => '0',
+            'disable' => '',
         ), $atts));
 
         if (empty($title) && empty($imdb)) {
             return '<div class="f13-movies-error">'.__('Please provide either an "imdb" or "title" attribute', 'f13-movies').'</div>';
         }
+
+        $disable = explode(',', $disable);
 
         $cachetime = $this->_check_cache($cachetime);
 
@@ -88,7 +91,7 @@ class Control
             't' => $title,
             'type' => $type,
             'y' => $year,
-            'plot' => $plot
+            'plot' => $plot,
         ));
 
         if (property_exists($data, 'Error')) {
@@ -99,6 +102,7 @@ class Control
 
         $v = new \F13\Movies\Views\Movies(array(
             'data' => $data,
+            'disable' => $disable,
             'local_image' => $cover->file_url,
             'information' => (int) $information,
         ));

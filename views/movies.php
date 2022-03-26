@@ -76,75 +76,83 @@ class Movies
         $v = '<div class="f13-movies-container">';
             $v .= '<div class="f13-movies-title">'.$this->data->Title.'</div>';
             $v .= '<div class="f13-movies-head">';
-                $v .= '<div class="f13-movies-poster">';
-                    $v .= '<a href="'.str_replace('SX300', 'SX1200', $this->data->Poster).'">';
-                        $v .= '<img src="'.$this->local_image.'" alt="Poster for '.$this->data->Title.'">';
-                    $v .= '</a>';
-                $v .= '</div>';
-                $v .= '<div class="f13-movies-plot">';
-                    $v .= '<div>';
-                        $v .= '<strong>'.$this->label_plot.':</strong> ';
-                        $v .= $this->data->Plot;
+                if (!in_array('image', $this->disable)) {
+                    $v .= '<div class="f13-movies-poster">';
+                        $v .= '<a href="'.str_replace('SX300', 'SX1200', $this->data->Poster).'">';
+                            $v .= '<img src="'.$this->local_image.'" alt="Poster for '.$this->data->Title.'">';
+                        $v .= '</a>';
                     $v .= '</div>';
-                $v .= '</div>';
-            $v .= '</div>';
-
-            $v .= '<div class="f13-movies-ratings">';
-                foreach ($this->data->Ratings as $rating) {
-                    $v .= '<div class="f13-movies-rating">';
-                        $v .= '<strong>'.$rating->Source.':</strong> '.$rating->Value;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-rating f13-movie-stars">';
-                        $v .= $this->_get_stars($rating->Value);
+                }
+                if (!in_array('plot', $this->disable)) {
+                    $v .= '<div class="f13-movies-plot">';
+                        $v .= '<div>';
+                            $v .= '<strong>'.$this->label_plot.':</strong> ';
+                            $v .= $this->data->Plot;
+                        $v .= '</div>';
                     $v .= '</div>';
                 }
             $v .= '</div>';
 
-            $v .= '<details class="f13-movies-stats" '.($this->information ? 'open' : '').'>';
-                $v .= '<summary title="'.$this->label_toggle_information.'"><a tabindex="-1">'.$this->label_information.'</a></summary>';
-                $v .= '<div class="f13-movies-stats-inner">';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_runtime.':</strong> '.$this->data->Runtime;
-                    $v .= '</div>';
-                    if (property_exists($this->data, 'totalSeasons')) {
-                        $v .= '<div class="f13-movies-stat">';
-                            $v .= '<strong>'.$this->label_seasons.':</strong> '.$this->data->totalSeasons;
+            if (!in_array('rating', $this->disable)) {
+                $v .= '<div class="f13-movies-ratings">';
+                    foreach ($this->data->Ratings as $rating) {
+                        $v .= '<div class="f13-movies-rating">';
+                            $v .= '<strong>'.$rating->Source.':</strong> '.$rating->Value;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-rating f13-movie-stars">';
+                            $v .= $this->_get_stars($rating->Value);
                         $v .= '</div>';
                     }
-                    if (property_exists($this->data, 'Season')) {
-                        $v .= '<div class="f13-movies-stat">';
-                            $v .= '<strong>'.$this->label_season.':</strong> '.$this->data->Season;
-                        $v .= '</div>';
-                    }
-                    if (property_exists($this->data, 'Episode')) {
-                        $v .= '<div class="f13-movies-stat">';
-                            $v .= '<strong>'.$this->label_episode.':</strong> '.$this->data->Episode;
-                        $v .= '</div>';
-                    }
-
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_genre.':</strong> '.$this->data->Genre;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_awards.':</strong> '.$this->data->Awards;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_director.':</strong> '.$this->data->Director;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_writer.':</strong> '.$this->data->Writer;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_actors.':</strong> '.$this->data->Actors;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_language.':</strong> '.$this->data->Language;
-                    $v .= '</div>';
-                    $v .= '<div class="f13-movies-stat">';
-                        $v .= '<strong>'.$this->label_country.':</strong> '.$this->data->Country;
-                    $v .= '</div>';
                 $v .= '</div>';
-            $v .= '</details>';
+            }
+
+            if (!in_array('information', $this->disable)) {
+                $v .= '<details class="f13-movies-stats" '.($this->information ? 'open' : '').'>';
+                    $v .= '<summary title="'.$this->label_toggle_information.'"><a tabindex="-1">'.$this->label_information.'</a></summary>';
+                    $v .= '<div class="f13-movies-stats-inner">';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_runtime.':</strong> '.$this->data->Runtime;
+                        $v .= '</div>';
+                        if (property_exists($this->data, 'totalSeasons')) {
+                            $v .= '<div class="f13-movies-stat">';
+                                $v .= '<strong>'.$this->label_seasons.':</strong> '.$this->data->totalSeasons;
+                            $v .= '</div>';
+                        }
+                        if (property_exists($this->data, 'Season')) {
+                            $v .= '<div class="f13-movies-stat">';
+                                $v .= '<strong>'.$this->label_season.':</strong> '.$this->data->Season;
+                            $v .= '</div>';
+                        }
+                        if (property_exists($this->data, 'Episode')) {
+                            $v .= '<div class="f13-movies-stat">';
+                                $v .= '<strong>'.$this->label_episode.':</strong> '.$this->data->Episode;
+                            $v .= '</div>';
+                        }
+
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_genre.':</strong> '.$this->data->Genre;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_awards.':</strong> '.$this->data->Awards;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_director.':</strong> '.$this->data->Director;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_writer.':</strong> '.$this->data->Writer;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_actors.':</strong> '.$this->data->Actors;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_language.':</strong> '.$this->data->Language;
+                        $v .= '</div>';
+                        $v .= '<div class="f13-movies-stat">';
+                            $v .= '<strong>'.$this->label_country.':</strong> '.$this->data->Country;
+                        $v .= '</div>';
+                    $v .= '</div>';
+                $v .= '</details>';
+            }
 
             $v .= '<div class="f13-movies-notice">';
                 $v .= $this->label_data_provided_by.' <a href="http://omdbapi.com/" title="'.$this->label_omdb_api_title.'" target="_blank">'.$this->label_omdb_api.'</a>';

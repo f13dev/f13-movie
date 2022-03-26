@@ -5,7 +5,7 @@ Do you blog about movies? It can be tedious adding movie information manually, n
 * Developer: [F13Dev](http://f13dev.com)
 * Tags: movie, tv show, episode, embed, shortcode, imdb, omdb
 * Requires: WordPress 3.0.1 and up
-* Tested to: WordPress 4.8.1
+* Tested to: WordPress 5.9.2
 * License: [GPLv3 or later](http://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Description
@@ -16,6 +16,7 @@ Simply enter the shortcode: [movie imdb="an IMDB ID"] or [Movie title="A Movie T
 Optional attributes:
 * cachetime="A time in minutes" - default is 1440 (24 hours)
 * plot="short|full" - default is full
+* disable="image,plot,information,rating" - comma separated list of sections to remove
 
 If adding the shortcode with a title, rather than an IMDB ID, the following attributes are also optional to find the correct entry:
 * type="movie|series|episode"
@@ -34,6 +35,7 @@ Features:
 * Provides the IMDB rating, including a star rating image
 * Adds a link to the movie on IMDB
 * Utilizes transient caching to reduce page load times and api calls
+* Disable widget blocks to customize the appearance to your needs
 
 
 ## Installation
@@ -55,12 +57,19 @@ Q) Using the shortcode with a title returns the wrong movie
 
 A) Try adding the optional attributes, type="movie|series|episode" and year="a year" to refine your search result
 
+Q) How do I hide the plot and information
+
+A) Include the optional "disable" attribute, disable="plot,information"
+
 
 ## Screenshots
 ![Movie Shortcode screenshot](screenshot-1.png)
 The results of adding [movie imdb="tt0480249"] to a blog post.
 
 ## Changelog
+
+### 2.0.2
+* Optional attribute to disable blocks from the widget
 
 ### 1.0
 * Initial release
