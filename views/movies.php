@@ -74,13 +74,16 @@ class Movies
     public function movie_shortcode()
     {
         $v = '<div class="f13-movies-container">';
-            $v .= '<div class="f13-movies-title">'.$this->data->Title.'</div>';
+            if (!in_array('title', $this->disable)) {
+                $v .= '<div class="f13-movies-title" role="heading">'.$this->data->Title.'</div>';
+            }
             $v .= '<div class="f13-movies-head">';
                 if (!in_array('image', $this->disable)) {
                     $v .= '<div class="f13-movies-poster">';
-                        $v .= '<a href="'.str_replace('SX300', 'SX1200', $this->data->Poster).'">';
-                            $v .= '<img src="'.$this->local_image.'" alt="Poster for '.$this->data->Title.'">';
-                        $v .= '</a>';
+                        //$v .= '<a href="'.str_replace('SX300', 'SX1200', $this->data->Poster).'">';
+                            $v .= '<img src="'.str_replace('SX300', 'SX1200', $this->data->Poster).'" role="presentation" alt="" aria-label="Poster: '.$this->data->Title.'" loading="lazy">';
+                            //$v .= __('Enlarge movie poster');
+                        //$v .= '</a>';
                     $v .= '</div>';
                 }
                 if (!in_array('plot', $this->disable)) {
@@ -108,7 +111,7 @@ class Movies
 
             if (!in_array('information', $this->disable)) {
                 $v .= '<details class="f13-movies-stats" '.($this->information ? 'open' : '').'>';
-                    $v .= '<summary title="'.$this->label_toggle_information.'"><a tabindex="-1">'.$this->label_information.'</a></summary>';
+                    $v .= '<summary tabindex="0" title="'.$this->label_toggle_information.'"><a tabindex="-1" href="#" role="button">'.$this->label_information.'</a></summary>';
                     $v .= '<div class="f13-movies-stats-inner">';
                         $v .= '<div class="f13-movies-stat">';
                             $v .= '<strong>'.$this->label_runtime.':</strong> '.$this->data->Runtime;

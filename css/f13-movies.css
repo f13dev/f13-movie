@@ -15,7 +15,7 @@
 .f13-movies-notice { font-size: 0.7em; text-align: center; margin-top:10px; }
 .f13-movie-stars .dashicons { color: #B49000; }
 .f13-movies-stats-inner { background: #f6f6f6; border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
-.f13-movies-plot div { padding: 10px; background: #fff; border: 1px solid #ccc; height: 100%; }
+.f13-movies-plot div { padding: 10px; background: #fff; border: 1px solid #ccc; height: 100%; box-sizing: border-box; }
 .f13-movies-stats[open] summary ~ * { animation: sweep .5s ease-in-out; }
 @keyframes sweep {
     0% {opacity: 0; margin-left: -10px}
