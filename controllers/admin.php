@@ -8,6 +8,34 @@ class Admin
         add_action('admin_init', array($this, 'register_settings'));
     }
 
+    public static function _update_settings()
+    {
+        global $f13_movie_settings;
+
+        $f13_movie_settings = array(
+            'omdb_api_key'  => get_option('omdb_api_key'),
+            'tmdb_api_key'  => get_option('tmdb_api_key'),
+            'preferred_api' => get_option('f13_movie_preferred_api'),
+        );
+
+        $f13_movie_settings['omdb_enable']   = (!empty($f13_movie_settings['omdb_api_key']));
+        $f13_movie_settings['tmdb_enable']   = (!empty($f13_movie_settings['tmdb_api_key']));
+        $f13_movie_settings['preferred_api'] = ($f13_movie_settings['preferred_api']) ? $f13_movie_settings['preferred_api'] : 'omdb';        
+
+        return $f13_movie_settings;
+    }
+
+    public static function _get_settings()
+    {
+        global $f13_movie_settings;
+
+        if (empty($f13_movie_settings)) {
+            return \F13\Movies\Controllers\Admin::_update_settings();
+        }
+
+        return $f13_movie_settings;
+    }
+
     public function admin_menu()
     {
         global $menu;
@@ -48,5 +76,7 @@ class Admin
     public function register_settings()
     {
         register_setting('f13-movies-settings-group', 'omdb_api_key');
+        register_setting('f13-movies-settings-group', 'tmdb_api_key');
+        register_setting('f13-movies-settings-group', 'f13_movie_preferred_api');
     }
 }

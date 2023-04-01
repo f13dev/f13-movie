@@ -81,7 +81,7 @@ class Movies
                 if (!in_array('image', $this->disable)) {
                     $v .= '<div class="f13-movies-poster">';
                         //$v .= '<a href="'.str_replace('SX300', 'SX1200', $this->data->Poster).'">';
-                            $v .= '<img src="'.str_replace('SX300', 'SX1200', $this->data->Poster).'" role="presentation" alt="" aria-label="Poster: '.$this->data->Title.'" loading="lazy">';
+                            $v .= '<img src="'.str_replace('SX300', 'SX'.$this->image_size, $this->data->Poster).'" role="presentation" alt="" aria-label="Poster: '.$this->data->Title.'" loading="lazy">';
                             //$v .= __('Enlarge movie poster');
                         //$v .= '</a>';
                     $v .= '</div>';
@@ -106,6 +106,12 @@ class Movies
                             $v .= $this->_get_stars($rating->Value);
                         $v .= '</div>';
                     }
+                $v .= '</div>';
+            }
+
+            if (!empty($this->trailer)) {
+                $v .= '<div class="f13-movies-trailer">';
+                    $v .= '<iframe src="https://www.youtube.com/embed/'.esc_attr($this->trailer).'" title="YouTube video player" frameborder="0" allow="accelerometer;" allowfullscreen></iframe>';
                 $v .= '</div>';
             }
 

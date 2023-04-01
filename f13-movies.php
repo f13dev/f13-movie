@@ -16,6 +16,8 @@ if (!defined('F13_MOVIES')) define('F13_MOVIES', get_plugin_data(__FILE__, false
 if (!defined('F13_MOVIES_PATH')) define('F13_MOVIES_PATH', plugin_dir_path( __FILE__ ));
 if (!defined('F13_MOVIES_URL')) define('F13_MOVIES_URL', plugin_dir_url(__FILE__));
 
+$f13_movie_settings = array();
+
 class Plugin
 {
     public function init()

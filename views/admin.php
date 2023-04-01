@@ -74,12 +74,7 @@ class Admin
             $v .= '<h1>'.$this->label_f13_movie_settings.'</h1>';
             $v .= '<p>'.$this->label_welcome.'</p>';
             $v .= '<p>'.$this->label_requires_omdb_api.'</p>';
-            $v .= '<h3>'.$this->label_obtain_omdb_api.':</h3>';
-            $v .= '<ol>';
-                $v .= '<li>'.$this->label_visit.': <a href="http://www.omdbapi.com/apikey.aspx" title="'.$this->label_omdb_api.'" target="_blank">http://www.omdbapi.com/apikey.aspx</a></li>';
-                $v .= '<li>'.$this->label_fill_in_form.'</li>';
-                $v .= '<li>'.$this->label_copy_paste_key.'</li>';
-            $v .= '</ol>';
+
 
             $v .= '<form method="post" action="options.php">';
                 $v .= '<input type="hidden" name="option_page" value="'.esc_attr('f13-movies-settings-group').'">';
@@ -87,12 +82,58 @@ class Admin
                 $v .= '<input type="hidden" id="_wpnonce" name="_wpnonce" value="'.wp_create_nonce('f13-movies-settings-group-options').'">';
                 do_settings_sections('f13-movies-settings-group');
                 $v .= '<table class="form-table">';
+                $v .= '<tr valign="top">';
+                    $v .= '<th scope="row">'.__('Preferred API').'</th>';
+                    $v .= '<td>';
+                        $preferred_option = get_option('f13_movie_preferred_api');
+                        $v .= '<p>';
+                            $v .= '<input type="radio" id="f13_movie_preferred_api_omdb" name="f13_movie_preferred_api" value="omdb" '.($preferred_option == 'omdb' || !$preferred_option ? 'checked="checked"' : '').'>';
+                            $v .= '<label for="f13_movie_preferred_api_omdb">'.__('Open Movie Database').'</label>';
+                        $v .= '</p>';
+                        $v .= '<p>';
+                            $v .= '<input type="radio" id="f13_movie_preferred_api_tmdb" name="f13_movie_preferred_api" value="tmdb" '.($preferred_option == 'tmdb' ? 'checked="checked"' : '').'>';
+                            $v .= '<label for="f13_movie_preferred_api_tmdb">'.__('The Movie Database').'</label>';
+                        $v .= '</p>';
+                    $v .= '</td>';
+                $v .= '</tr>';
+
+                $v .= '<tr valign="top">';
+                        $v .= '<td colspan="2">';
+                            $v .= '<h2>'.__('Open Movie Database').'</h2>';
+                            $v .= '<strong>'.$this->label_obtain_omdb_api.':</strong>';
+                            $v .= '<ol>';
+                                $v .= '<li>'.$this->label_visit.': <a href="http://www.omdbapi.com/apikey.aspx" title="'.$this->label_omdb_api.'" target="_blank">http://www.omdbapi.com/apikey.aspx</a></li>';
+                                $v .= '<li>'.$this->label_fill_in_form.'</li>';
+                                $v .= '<li>'.$this->label_copy_paste_key.'</li>';
+                            $v .= '</ol>';
+                        $v .= '</td>';
+                    $v .= '</tr>';
                     $v .= '<tr valign="top">';
                         $v .= '<th scope="row">'.$this->label_api_key.'</th>';
                         $v .= '<td>';
                             $v .= '<input type="password" name="omdb_api_key" value="'.esc_attr(get_option('omdb_api_key')).'" style="width: 50%">';
                         $v .= '</td>';
                     $v .= '</tr>';
+
+                    $v .= '<tr valign="top">';
+                        $v .= '<td colspan="2">';
+                            $v .= '<h2>'.__('The Movie Database').'</h2>';
+                            $v .= '<strong>'.__('To obtain a TMDB API key:').'</strong>';
+                            $v .= '<ol>';
+                                $v .= '<li>'.__('Sign in / Register for an account at <a href="https://www.themoviedb.org/signup" target="_blank">The Movie Database</a>').'</li>';
+                                $v .= '<li>'.__('Complete the form to apply for an <a href="https://www.themoviedb.org/settings/api" target="_blank">api key</a>').'</li>';
+                                $v .= '<li>'.$this->label_copy_paste_key.'</li>';
+                            $v .= '</ol>';
+                        $v .= '</td>';
+                    $v .= '</tr>';
+                    $v .= '<tr valign="top">';
+                        $v .= '<th scope="row">'.$this->label_api_key.'</th>';
+                        $v .= '<td>';
+                            $v .= '<input type="text" name="tmdb_api_key" value="'.esc_attr(get_option('tmdb_api_key')).'" style="width: 50%;">';
+                        $v .= '</td>';
+                    $v .= '</tr>';
+
+
                 $v .= '</table>';
                 $v .= '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="'.__('Save Changes', 'f13-movies').'"></p>';
             $v .= '</form>';
@@ -101,6 +142,8 @@ class Admin
             $v .= '<p>'.$this->label_by_title_year.':<br>[movie title="The Blair Witch Project" year="1999"]</p>';
             $v .= '<p>'.$this->label_by_imdb.':<br>[movie imdb="tt2123146"]</p>';
         $v .= '</div>';
+
+        print('<pre>'.print_r(\F13\Movies\Controllers\Admin::_get_settings(), true).'</pre>');
 
         return $v;
     }

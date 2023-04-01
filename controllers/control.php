@@ -46,7 +46,7 @@ class Control
         }
 
         return (object) array(
-            'console' => $console,
+            'console'  => $console,
             'file_url' => $file_url,
         );
     }
@@ -54,14 +54,16 @@ class Control
     public function movie_shortcode($atts = array())
     {
         extract(shortcode_atts(array(
-            'imdb' => '',
-            'title' => '',
-            'type' => '',
-            'year' => '',
-            'plot' => 'full',
-            'cachetime' => '1440',
+            'imdb'        => '',
+            'title'       => '',
+            'type'        => '',
+            'year'        => '',
+            'plot'        => 'full',
+            'cachetime'   => '1440',
             'information' => '0',
-            'disable' => '',
+            'disable'     => '',
+            'trailer'     => false,
+            'image_size'  => 1200,
         ), $atts));
 
         if (empty($title) && empty($imdb)) {
@@ -73,7 +75,7 @@ class Control
         $cachetime = $this->_check_cache($cachetime);
 
         $cache_key = 'f13-movies-'.sha1(serialize($atts));
-        $transient = get_transient($cache_key);
+        $transient = ($cachetime == 0) ? false : get_transient($cache_key);
         if ($transient) {
             $v = '<script>console.log("Building movie information from transient: '.$cache_key.'");</script>';
             $v .= $transient;
@@ -87,10 +89,10 @@ class Control
 
         $m = new \F13\Movies\Models\OMDB();
         $data = $m->retrieve_movie_data(array(
-            'i' => $imdb,
-            't' => $title,
+            'i'    => $imdb,
+            't'    => $title,
             'type' => $type,
-            'y' => $year,
+            'y'    => $year,
             'plot' => $plot,
         ));
 
@@ -101,10 +103,12 @@ class Control
         $cover = $this->get_cover($data->Poster);
 
         $v = new \F13\Movies\Views\Movies(array(
-            'data' => $data,
-            'disable' => $disable,
+            'data'        => $data,
+            'disable'     => $disable,
             'local_image' => $cover->file_url,
             'information' => (int) $information,
+            'trailer'     => $trailer,
+            'image_size'  => $image_size,
         ));
 
         $console = '<script>console.log("Building movie information from API, setting: '.$cache_key.'");</script>';
