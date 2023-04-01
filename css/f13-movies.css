@@ -1,8 +1,8 @@
-.f13-movies-container { padding: 10px 5px; border: 1px solid #ccc; background: #f6f6f6; margin-bottom: 10px; }
-.f13-movies-title { font-size: 30px; text-align: center; border-bottom: 1px solid #ccc; margin: -10px -5px 5px; padding: 5px; }
+.f13-movies-container, .f13-movies-actor-container { padding: 10px 5px; border: 1px solid #ccc; background: #f6f6f6; margin-bottom: 10px; }
+.f13-movies-title, .f13-movies-actor-name { font-size: 30px; text-align: center; border-bottom: 1px solid #ccc; margin: -10px -5px 5px; padding: 5px; }
 .f13-movies-head { display: flex; flex-wrap: wrap; }
-.f13-movies-poster, .f13-movies-plot { min-width: 200px; width: 50%; flex-basis: auto; flex-grow: 1; padding: 10px; box-sizing: border-box; }
-.f13-movies-poster img { width: 100%; height: auto; }
+.f13-movies-poster, .f13-movies-plot, .f13-movies-actor-image, .f13-movies-actor-credits { min-width: 200px; width: 50%; flex-basis: auto; flex-grow: 1; padding: 10px; box-sizing: border-box; }
+.f13-movies-poster img, .f13-movies-actor-image img { width: 100%; height: auto; }
 .f13-movies-stats { border: 1px solid #ccc; padding: 10px; background: #fff; margin: 10px; }
 .f13-movies-stats summary { padding: 10px; text-align: center; cursor: pointer; margin: -10px; }
 .f13-movies-stats:hover { border: 1px solid #222; }
@@ -19,6 +19,16 @@
 .f13-movies-stats[open] summary ~ * { animation: sweep .5s ease-in-out; }
 .f13-movies-trailer { margin: 10px; border: 1px solid #ccc; height: 0; overflow: hidden; padding-bottom: 56.25%; position: relative; }
 .f13-movies-trailer iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.f13-movies-actor-info, .f13-movies-actor-bio { padding: 10px; border: 1px solid #ccc; background: #fff; margin: 0 10px 10px; font-size: smaller;  }
+.f13-movies-actor-credits-box { padding: 10px; border: 1px solid #ccc; background: #fff; min-height: 100%; }
+.f13-movies-actor-credit { border-top: 1px solid #ccc; padding: 5px 0; clear: both; }
+.f13-movies-actor-credit-title { font-size: large; }
+.f13-movies-actor-credit-info { display: block; font-size: smaller; }
+.f13-movies-actor-credits-title { font-size: large; font-weight: bold; }
+
+.f13-movies-powered-by-tmdb img { max-width: 150px; display: block; margin: auto; }
+
 @keyframes sweep {
     0% {opacity: 0; margin-left: -10px}
     100%  {opacity: 1; margin-left: 0px}

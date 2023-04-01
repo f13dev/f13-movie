@@ -6,6 +6,14 @@ class Admin
     {
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
+
+        add_action('wp_ajax_f13-movie-test', array($this, 'test'));
+    }
+
+    public function test()
+    {
+        $m = new \F13\Movies\Models\TMDB();
+        $m->test();
     }
 
     public static function _update_settings()
