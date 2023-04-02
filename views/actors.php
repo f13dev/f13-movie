@@ -2,11 +2,29 @@
 
 class Actors 
 {
+    public $label_bio;
+    public $label_character;
+    public $label_dob;
+    public $label_dod;
+    public $label_homepage;
+    public $label_known_for;
+    public $label_place_of_birth;
+    public $label_release_date;
+
     public $data; 
     public $credits;
 
     public function __construct($params = array()) 
     {
+        $this->label_bio            = __('Bio', 'f13-movies');
+        $this->label_character      = __('Character', 'f13-movies');
+        $this->label_dob            = __('Date of birth', 'f13-movies');
+        $this->label_dod            = __('Date of death', 'f13-movies');
+        $this->label_homepage       = __('Homepage', 'f13-movies');
+        $this->label_known_for      = __('Known for', 'f13-movies');
+        $this->label_place_of_birth = __('Place of birth', 'f13-movies');
+        $this->label_release_date   = __('Release date', 'f13-movies');
+
         foreach ($params as $k => $v) {
             $this->{$k} = $v;
         }
@@ -24,15 +42,15 @@ class Actors
                 $count = 0;
                 $v .= '<div class="f13-movies-actor-credits">';
                     $v .= '<div class="f13-movies-actor-credits-box">';
-                        $v .= '<span div class="f13-movies-actor-credits-title">'.__('Known for').':</span>';
+                        $v .= '<span div class="f13-movies-actor-credits-title">'.$this->label_known_for.':</span>';
                         foreach ($this->data->credits->cast as $credit) {
                             if ($count > 4) {
                                 break;
                             }
                             $v .= '<div class="f13-movies-actor-credit">';
                                 $v .= '<div class="f13-movies-actor-credit-title">'.esc_attr($credit->title).'</div>';
-                                $v .= '<span class="f13-movies-actor-credit-date f13-movies-actor-credit-info"><strong>'.__('Release date').':</strong> '.date('F j Y', strtotime($credit->release_date)).'</span>';
-                                $v .= '<span class="f13-movies-actor-credit-character f13-movies-actor-credit-info"><strong>'.__('Character').'</strong> '.esc_attr($credit->character).'</span>';
+                                $v .= '<span class="f13-movies-actor-credit-date f13-movies-actor-credit-info"><strong>'.$this->label_release_date.':</strong> '.date('F j Y', strtotime($credit->release_date)).'</span>';
+                                $v .= '<span class="f13-movies-actor-credit-character f13-movies-actor-credit-info"><strong>'.$this->label_character.'</strong> '.esc_attr($credit->character).'</span>';
                             $v .= '</div>';
                             $count++;
                         }
@@ -40,22 +58,22 @@ class Actors
                 $v .= '</div>';
 
             $v .= '</div>';
-            $v .= '<div class="f13-movies-actor-bio"><div><strong>'.__('Bio').':</strong> '.nl2br(esc_attr($this->data->biography)).'</div></div>';
+            $v .= '<div class="f13-movies-actor-bio"><div><strong>'.$this->label_bio.':</strong> '.nl2br(esc_attr($this->data->biography)).'</div></div>';
             $v .= '<div class="f13-movies-actor-info">';
                 if (property_exists($this->data, 'birthday') && $this->data->birthday) {
-                    $v .= '<div><strong>'.__('Date of birth').':</strong> '.date('F j Y', strtotime($this->data->birthday)).'</div>';
+                    $v .= '<div><strong>'.$this->label_dob.':</strong> '.date('F j Y', strtotime($this->data->birthday)).'</div>';
                 }
                 if (property_exists($this->data, 'place_of_birth') && $this->data->place_of_birth) {
-                    $v .= '<div><strong>'.__('Place of birth').':</strong> '.esc_attr($this->data->place_of_birth).'</div>';
+                    $v .= '<div><strong>'.$this->label_place_of_birth.':</strong> '.esc_attr($this->data->place_of_birth).'</div>';
                 }
                 if (property_exists($this->data, 'deathday') && $this->data->deathday) {
-                    $v .= '<div><strong>'.__('Date of death').':</strong> '.date('F j Y', strtotime($this->data->deathday)).'</div>';
+                    $v .= '<div><strong>'.$this->label_dod.':</strong> '.date('F j Y', strtotime($this->data->deathday)).'</div>';
                 }
                 if (property_exists($this->data, 'known_for_department') && $this->data->known_for_department) {
-                    $v .= '<div><strong>'.__('Known for').':</strong> '.$this->data->known_for_department.'</div>';
+                    $v .= '<div><strong>'.$this->label_known_for.':</strong> '.$this->data->known_for_department.'</div>';
                 }
                 if (property_exists($this->data, 'homepage') && $this->data->homepage) {
-                    $v .= '<div><strong>'.__('Website').':</strong> <a href="'.esc_attr($this->data->homepage).'" target="_blank">'.$this->data->homepage.'</a></div>';
+                    $v .= '<div><strong>'.$this->label_homepage.':</strong> <a href="'.esc_attr($this->data->homepage).'" target="_blank">'.$this->data->homepage.'</a></div>';
                 }
             $v .= '</div>'; 
 

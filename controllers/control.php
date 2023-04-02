@@ -114,19 +114,26 @@ class Control
             'cachetime'   => '1440',
             'information' => '0',
             'disable'     => '',
-            'trailer'     => false,
-            'image_size'  => 1200,
+            'trailer'     => '',
+            'image_size'  => '1200',
+            'api'         => ''
         ), $atts));
 
         if (empty($title) && empty($imdb)) {
             return '<div class="f13-movies-error">'.__('Please provide either an "imdb" or "title" attribute', 'f13-movies').'</div>';
         }
 
+        // Work out which API to use
+        $settings = \F13\Movies\Controllers\Admin::_get_settings();
+        if (!($api && $settings[$api.'_enable'])) {
+            $api = $settings['preferred_api'];
+        }        
+
         $disable = explode(',', $disable);
 
         $cachetime = $this->_check_cache($cachetime);
 
-        $cache_key = 'f13-movies-'.sha1(serialize($atts));
+        $cache_key = 'f13-movies-'.sha1(serialize($atts).$settings['preferred_api']);
         $transient = ($cachetime == 0) ? false : get_transient($cache_key);
         if ($transient) {
             $v = '<script>console.log("Building movie information from transient: '.$cache_key.'");</script>';
@@ -139,20 +146,39 @@ class Control
             $plot = 'full';
         }
 
-        $m = new \F13\Movies\Models\OMDB();
-        $data = $m->retrieve_movie_data(array(
-            'i'    => $imdb,
-            't'    => $title,
-            'type' => $type,
-            'y'    => $year,
-            'plot' => $plot,
-        ));
+        if ($api == 'omdb') {
+            $m = new \F13\Movies\Models\OMDB();
+            $data = $m->retrieve_movie_data(array(
+                'i'    => $imdb,
+                't'    => $title,
+                'type' => $type,
+                'y'    => $year,
+                'plot' => $plot,
+            ));
+        } else 
+        if ($api == 'tmdb') {
+            $m = new \F13\Movies\Models\TMDB();
+            $data = $m->retrieve_movie_data(array(
+                'imdb'  => $imdb,
+                'title' => $title,
+                'type'  => $type,
+                'year'  => $year,
+                'plot'  => $plot,
+            ));
+            if ($data && property_exists($data, 'poster_path') && $data->poster_path) {
+                $data->poster_path = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'.$data->poster_path;
+            }
+        }
+
+        if (is_wp_error($data)) {
+            return '<div class="f13-movies-error"><strong>'.__('Error', 'f13-movies').': </strong>'.$data->get_error_message().'</div>';
+        }
 
         if (property_exists($data, 'Error')) {
             return '<div class="f13-movies-error"><strong>'.__('Error', 'f13-movies').': </strong>'.$data->Error.'</div>';
         }
 
-        $cover = $this->get_cover($data->Poster);
+        $cover = $this->get_cover(($api == 'tmdb' ? $data->poster_path : $data->Poster));
 
         $v = new \F13\Movies\Views\Movies(array(
             'data'        => $data,
@@ -161,6 +187,7 @@ class Control
             'information' => (int) $information,
             'trailer'     => $trailer,
             'image_size'  => $image_size,
+            'api'         => $api,
         ));
 
         $console = '<script>console.log("Building movie information from API, setting: '.$cache_key.'");</script>';

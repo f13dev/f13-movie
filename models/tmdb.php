@@ -33,7 +33,57 @@ class TMDB
 
     public function retrieve_movie_data($params)
     {
+        $imdb  = (array_key_exists('imdb', $params))  ? $params['imdb']  : '';
+        $title = (array_key_exists('title', $params)) ? $params['title'] : '';
+        $type  = (array_key_exists('type', $params))  ? $params['type']  : '';
+        $year  = (array_key_exists('year', $params))  ? $params['year']  : '';
 
+        if ($imdb) {
+            return $this->retrieve_movie_data_from_imdb($imdb, $type);
+        }
+
+        $url = '/3/search/multi?query='.urlencode($title);
+        $results = $this->_call($url);
+
+        if ($results->results) {
+            switch ($results->results[0]->media_type) {
+                case 'movie':
+                    $url = '/3/movie'.$results->results[0]->id;
+                    return $this->_call($url);
+                case 'tv':
+                    $url = '/3/tv/'.$results->results[0]->id;
+                    return $this->_call($url);
+            }
+        }
+
+        return new \WP_Error('f13-movie', __('No results'));
+    }
+
+    public function retrieve_movie_data_from_imdb($imdb, $type = '')
+    {
+        $url = '/3/find/'.$imdb.'?external_source=imdb_id';
+        $results = $this->_call($url);
+
+        switch ($type) {
+            case '': case 'movie':
+                if (!empty($results->movie_results)) {
+                    $url = '/3/movie/'.$results->movie_results[0]->id;
+                    return $this->_call($url);
+                }   
+            case '': case 'series':
+                if (!empty($results->tv_results)) {
+                    $url = '/3/tv/'.$results->tv_results[0]->id;
+                    return $this->_call($url);
+                }
+            case '': case 'episode':
+                if (!empty($results->tv_episode_results)) {
+                    $ep = $results->tv_episode_results[0];
+                    $url = '/3/tv/'.$ep->show_id.'/season/'.$ep->season_number.'/episode/'.$ep->episode_number;
+                    return $this->_call($url);
+                }
+
+            return new \WP_Error('f13-move', __('No results'));
+        }
     }
 
     public function get_image_id($file_name)
