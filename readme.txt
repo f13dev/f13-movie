@@ -3,8 +3,8 @@ Contributors: f13dev
 Donate link: http://f13dev.com/wordpress-plugin-movie-shortcode/
 Tags: movie, tv show, episode, embed, shortcode, imdb, omdb
 Requires at least: 3.0.1
-Tested up to: 6.1.1
-Stable tag: 2.0.4
+Tested up to: 6.2
+Stable tag: 2.1.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,20 +12,31 @@ Do you blog about movies? It can be tedious adding movie information manually, n
 
 == Description ==
 
-Using Movie Shortcode you can easily add information about a movie, tv show or episode to a blog post.
+Using Movie Shortcode you can easily add information about a movie, tv show, episode or actor to a blog post.
 
-Simply enter the shortcode: [movie imdb="an IMDB ID"] or [Movie title="A Movie Title"] to a blog post to add an array of information about the movie, tv show or episode.
+Simply enter the shortcode: [movie imdb="an IMDB ID"] or [movie title="A Movie Title"] to a blog post to add an array of information about the movie, tv show or episode; or enter the shortcode [actor tmdb="a TMDB person ID"] or [actor name="An actors name"] to a blog post to add an array of information about the actor.
 
+=== Movie ===
 Optional attributes:
+
 * cachetime="A time in minutes" - default is 1440 (24 hours)
 * plot="short|full" - default is full
 * disable="title,image,plot,information,rating" - comma separated list of sections to remove
+* image_size="1200" - maximum image size in pixels
+* trailer="youtube video ID" - a youtube video ID for the movie trailer
 
 If adding the shortcode with a title, rather than an IMDB ID, the following attributes are also optional to find the correct entry:
+
 * type="movie|series|episode"
 * year="The year of the movie"
 
-Features:
+=== Actor ===
+Optional attributes (actor):
+
+* cachetime="A time in minutes" - default is 1440 (24 hours)
+
+=== Features ===
+
 * Styled appearance
 * Shows film title, year, release date
 * If showing a series, the total number of seasons is displayed
@@ -69,6 +80,11 @@ Include the optional "disable" attribute, disable="plot,information"
 1. The results of adding [movie imdb="tt0480249"] to a blog post.
 
 == Changelog ==
+= 2.1.0 =
+* Adding "image_size" attribute to movie shortcode
+* Adding "trailer" attribute to movie shortcode
+* Adding secondary API via "The Movie Database"
+* Adding "actor" shortcode
 
 = 2.0.4 =
 * Adding "title" to disable fields

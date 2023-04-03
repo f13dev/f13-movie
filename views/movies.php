@@ -2,6 +2,14 @@
 
 class Movies
 {
+    private $api;
+    private $data;
+    private $disable;
+    private $image_size;
+    private $information;
+    private $local_image;
+    private $trailer;
+
     public $label_actors;
     public $label_awards;
     public $label_budget;

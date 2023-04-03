@@ -1,28 +1,40 @@
 # Movie Shortcode
 Do you blog about movies? It can be tedious adding movie information manually, now you can add movie information with shortcode using an IMDB ID.
 
+
 ## About
 * Developer: [F13Dev](http://f13dev.com)
-* Tags: movie, tv show, episode, embed, shortcode, imdb, omdb
+* Tags: movie, tv show, episode, actor, embed, shortcode, imdb, omdb, tmdb
 * Requires: WordPress 3.0.1 and up
-* Tested to: WordPress 6.1.1
+* Tested to: WordPress 6.2
 * License: [GPLv3 or later](http://www.gnu.org/licenses/gpl-3.0.html)
 
+
 ## Description
-Using Movie Shortcode you can easily add information about a movie, tv show or episode to a blog post.
+Using Movie Shortcode you can easily add information about a movie, tv show, episode or actor to a blog post.
 
-Simply enter the shortcode: [movie imdb="an IMDB ID"] or [Movie title="A Movie Title"] to a blog post to add an array of information about the movie, tv show or episode.
+Simply enter the shortcode: [movie imdb="an IMDB ID"] or [movie title="A Movie Title"] to a blog post to add an array of information about the movie, tv show or episode; or enter the shortcode [actor tmdb="a TMDB person ID"] or [actor name="An actors name"] to a blog post to add an array of information about the actor.
 
-Optional attributes:
+
+### Movie
+Optional attributes (movie):
 * cachetime="A time in minutes" - default is 1440 (24 hours)
 * plot="short|full" - default is full
 * disable="title,image,plot,information,rating" - comma separated list of sections to remove
+* image_size="1200" - maximum image size in pixels
+* trailer="youtube video ID" - a youtube video ID for the movie trailer
 
 If adding the shortcode with a title, rather than an IMDB ID, the following attributes are also optional to find the correct entry:
 * type="movie|series|episode"
 * year="The year of the movie"
 
-Features:
+
+### Actor
+Optional attributes (actor):
+* cachetime="A time in minutes" - default is 1440 (24 hours)
+
+
+### Features
 * Styled appearance
 * Shows film title, year, release date
 * If showing a series, the total number of seasons is displayed
@@ -67,6 +79,12 @@ A) Include the optional "disable" attribute, disable="plot,information"
 The results of adding [movie imdb="tt0480249"] to a blog post.
 
 ## Changelog
+### 2.1.0
+* Adding "image_size" attribute to movie shortcode
+* Adding "trailer" attribute to movie shortcode
+* Adding secondary API via "The Movie Database"
+* Adding "actor" shortcode
+
 ### 2.0.4
 * Adding "title" to disable fields
 

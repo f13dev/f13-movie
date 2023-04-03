@@ -6,14 +6,6 @@ class Admin
     {
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
-
-        add_action('wp_ajax_f13-movie-test', array($this, 'test'));
-    }
-
-    public function test()
-    {
-        $m = new \F13\Movies\Models\TMDB();
-        $m->test();
     }
 
     public static function _update_settings()
@@ -59,7 +51,7 @@ class Admin
             add_menu_page( 'F13 Settings', 'F13 Admin', 'manage_options', 'f13-settings', array($this, 'f13_settings'), 'dashicons-embed-generic', 4);
             add_submenu_page( 'f13-settings', 'Plugins', 'Plugins', 'manage_options', 'f13-settings', array($this, 'f13_settings'));
         }
-        add_submenu_page( 'f13-settings', 'Movie (OMDB) Settings', 'Movie (OMDB)', 'manage_options', 'f13-movies', array($this, 'f13_movies_settings'));
+        add_submenu_page( 'f13-settings', 'Movie Settings', 'Movie', 'manage_options', 'f13-movies', array($this, 'f13_movies_settings'));
     }
 
     public function f13_movies_settings()

@@ -2,6 +2,8 @@
 
 class Admin
 {
+    private $data;
+
     public $label_all_wordpress_plugins;
     public $label_api_key;
     public $label_by_imdb;
@@ -78,9 +80,8 @@ class Admin
     {
         $v = '<div class="wrap">';
             $v .= '<h1>'.$this->label_f13_movie_settings.'</h1>';
-            $v .= '<p>'.$this->label_welcome.'</p>';
-            $v .= '<p>'.$this->label_requires_omdb_api.'</p>';
-
+            $v .= '<p>'.__('F13 Movie is able to utilise two free API\'s, "OMDB" and "TMDB". Movie data can be retrieved from either, actor data can only be retrieved from "TMDB"').'</p>';
+            $v .= '<p>'.sprintf(__('For shortcode examples, visit the %s page.'), '<a href="https://f13.dev/wordpress-plugin-movie-shortcode/" target="_blank">'.__('F13 Movie').'</a>').'</p>';
 
             $v .= '<form method="post" action="options.php">';
                 $v .= '<input type="hidden" name="option_page" value="'.esc_attr('f13-movies-settings-group').'">';
@@ -143,10 +144,6 @@ class Admin
                 $v .= '</table>';
                 $v .= '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="'.__('Save Changes', 'f13-movies').'"></p>';
             $v .= '</form>';
-
-            $v .= '<h3>Shortcode example</h3>';
-            $v .= '<p>'.$this->label_by_title_year.':<br>[movie title="The Blair Witch Project" year="1999"]</p>';
-            $v .= '<p>'.$this->label_by_imdb.':<br>[movie imdb="tt2123146"]</p>';
         $v .= '</div>';
 
         return $v;

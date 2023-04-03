@@ -3,8 +3,8 @@
 class TMDB 
 {
     public $wpdb;
-    public $api_key;
-    public $tmdb_api_url;
+    private $api_key;
+    private $tmdb_api_url;
 
     public function __construct()
     {
@@ -48,7 +48,7 @@ class TMDB
         if ($results->results) {
             switch ($results->results[0]->media_type) {
                 case 'movie':
-                    $url = '/3/movie'.$results->results[0]->id;
+                    $url = '/3/movie/'.$results->results[0]->id;
                     return $this->_call($url);
                 case 'tv':
                     $url = '/3/tv/'.$results->results[0]->id;
@@ -123,14 +123,5 @@ class TMDB
         }
 
         return $actor;
-    }
-
-    public function test()
-    {
-        $url = 'https://api.themoviedb.org/3/movie/747';
-        //$url = 'https://api.themoviedb.org/3/find/tt0365748?external_source=imdb_id';
-        $url = 'https://api.themoviedb.org/3/person/11108/movie_credits';
-
-        print('<pre>'.print_r($this->_call($url), true).'</pre>');
     }
 } 

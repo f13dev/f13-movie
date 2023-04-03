@@ -3,8 +3,8 @@
 class OMDB
 {
     public $wpdb;
-    public $api_key;
-    public $omdb_api_url;
+    private $api_key;
+    private $omdb_api_url;
 
     public function __construct()
     {

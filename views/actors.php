@@ -2,6 +2,9 @@
 
 class Actors 
 {
+    private $data; 
+    private $local_image;
+
     public $label_bio;
     public $label_character;
     public $label_dob;
@@ -9,21 +12,20 @@ class Actors
     public $label_homepage;
     public $label_known_for;
     public $label_place_of_birth;
+    public $label_powered_by_tmdb;
     public $label_release_date;
-
-    public $data; 
-    public $credits;
 
     public function __construct($params = array()) 
     {
-        $this->label_bio            = __('Bio', 'f13-movies');
-        $this->label_character      = __('Character', 'f13-movies');
-        $this->label_dob            = __('Date of birth', 'f13-movies');
-        $this->label_dod            = __('Date of death', 'f13-movies');
-        $this->label_homepage       = __('Homepage', 'f13-movies');
-        $this->label_known_for      = __('Known for', 'f13-movies');
-        $this->label_place_of_birth = __('Place of birth', 'f13-movies');
-        $this->label_release_date   = __('Release date', 'f13-movies');
+        $this->label_bio                = __('Bio', 'f13-movies');
+        $this->label_character          = __('Character', 'f13-movies');
+        $this->label_dob                = __('Date of birth', 'f13-movies');
+        $this->label_dod                = __('Date of death', 'f13-movies');
+        $this->label_homepage           = __('Homepage', 'f13-movies');
+        $this->label_known_for          = __('Known for', 'f13-movies');
+        $this->label_place_of_birth     = __('Place of birth', 'f13-movies');
+        $this->label_powered_by_tmdb    = __('Powered by The Movie Database', 'f13-movies');
+        $this->label_release_date       = __('Release date', 'f13-movies');
 
         foreach ($params as $k => $v) {
             $this->{$k} = $v;
@@ -78,7 +80,7 @@ class Actors
             $v .= '</div>'; 
 
             $v .= '<div class="f13-movies-powered-by-tmdb">';
-                $v .= '<a href="https://www.themoviedb.org/" target="_blank" title="'.__('Powered by The Movie Database').'">';
+                $v .= '<a href="https://www.themoviedb.org/" target="_blank" title="'.$this->label_powered_by_tmdb.'">';
                     $v .= '<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg">';
                 $v .= '</a>';
             $v .= '</div>';
