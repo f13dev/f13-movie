@@ -76,7 +76,8 @@ A) Include the optional "disable" attribute, disable="plot,information"
 
 ## Screenshots
 ![Movie Shortcode screenshot](screenshot-1.png)
-The results of adding [movie imdb="tt0480249"] to a blog post.
+![Movie Shortcode screenshot](screenshot-2.png)
+![Actor Shortcode screenshot](screenshot-3.png)
 
 ## Changelog
 ### 2.1.0
