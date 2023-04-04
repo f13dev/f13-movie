@@ -98,7 +98,7 @@ class Movies
             $v .= '<div class="f13-movies-head">';
                 if (!in_array('image', $this->disable)) {
                     $v .= '<div class="f13-movies-poster">';
-                        $v .= '<img src="'.esc_url(($this->local_image) ? $this->local_image : (($this->api == 'tmdb') ? $this->data->poster_path : str_replace('SX300', 'SX'.$this->image_size, $this->data->Poster))).'" role="presentation" alt="" aria-label="Poster: '.esc_attr(($this->api == 'tmdb') ? $this->data->title : $this->data->Title).'" loading="lazy">';
+                        $v .= '<img src="'.esc_url(($this->local_image) ? $this->local_image : (($this->api == 'tmdb') ? $this->data->poster_path : str_replace('SX300', 'SX'.$this->image_size, $this->data->Poster))).'" role="presentation" alt="'.esc_attr(($this->api == 'tmdb') ? $this->data->title : $this->data->Title).'" aria-label="Poster: '.esc_attr(($this->api == 'tmdb') ? $this->data->title : $this->data->Title).'" loading="lazy">';
                     $v .= '</div>';
                 }
                 if (!in_array('plot', $this->disable)) {
@@ -239,7 +239,7 @@ class Movies
             if ($this->api == 'tmdb') {
                 $v .= '<div class="f13-movies-powered-by-tmdb">';
                     $v .= '<a href="https://www.themoviedb.org/" target="_blank" title="'.$this->label_powered_by_tmdb.'">';
-                        $v .= '<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg">';
+                        $v .= '<img class="no-lightbox" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg">';
                     $v .= '</a>';
                 $v .= '</div>';
             } else {

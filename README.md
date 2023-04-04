@@ -80,6 +80,11 @@ A) Include the optional "disable" attribute, disable="plot,information"
 ![Actor Shortcode screenshot](screenshot-3.png)
 
 ## Changelog
+### 2.1.1
+* Adding alt text to images
+* Setting TMDB logo as no-lightbox
+* Removing console logs if F13_MOVIE_DEV is false
+
 ### 2.1.0
 * Adding "image_size" attribute to movie shortcode
 * Adding "trailer" attribute to movie shortcode

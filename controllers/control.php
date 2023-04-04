@@ -38,7 +38,7 @@ class Control
         $file_name = end($file_name);
         $image_id = $this->get_attachment_id($file_name);
         if ($image_id) {
-            $console = '<script>console.log("Loading movie image from local file");</script>';
+            $console = (F13_MOVIES_DEV) ? '<script>console.log("Loading movie image from local file");</script>' : '';
             $file_url = wp_get_attachment_url($image_id);
         } else {
             require_once(ABSPATH.'wp-admin/includes/media.php');
@@ -46,7 +46,7 @@ class Control
             require_once(ABSPATH.'wp-admin/includes/image.php');
 
             media_sideload_image($file, get_the_ID(), ' - Poster');
-            $console = '<script>console.log("Side loading movie image remoate file");</script>';
+            $console = (F13_MOVIES_DEV) ? '<script>console.log("Side loading movie image remoate file");</script>' : '';
             $file_url = wp_get_attachment_url($this->get_attachment_id($file_name));
         }
 
@@ -67,10 +67,10 @@ class Control
 
         $cachetime = $this->_check_cache($cachetime);
 
-        $cache_key = 'f13-movies-actor-'.sha1(serialize($atts));
+        $cache_key = 'f13-movies-actor-'.sha1(serialize($atts).F13_MOVIES['Version']);
         $transient = ($cachetime == 0) ? false : get_transient($cache_key);
-        if ($transient) {
-            $v = '<script>console.log("Building actor information from transient: '.$cache_key.'");</script>';
+        if (!F13_MOVIES_DEV && $transient) {
+            $v = (F13_MOVIES_DEV) ? '<script>console.log("Building actor information from transient: '.$cache_key.'");</script>' : '';
             $v .= $transient;
 
             return $v;
@@ -95,7 +95,7 @@ class Control
             'local_image' => $cover->file_url,
         ));
 
-        $console = '<script>console.log("Building actor information from API, setting: '.$cache_key.'");</script>';
+        $console = (F13_MOVIES_DEV) ? '<script>console.log("Building actor information from API, setting: '.$cache_key.'");</script>' : '';
         $return = $v->actor_shortcode();
 
         set_transient($cache_key, $return, $cachetime);
@@ -133,10 +133,10 @@ class Control
 
         $cachetime = $this->_check_cache($cachetime);
 
-        $cache_key = 'f13-movies-'.sha1(serialize($atts).$settings['preferred_api']);
+        $cache_key = 'f13-movies-'.sha1(serialize($atts).$settings['preferred_api'].F13_MOVIES['Version']);
         $transient = ($cachetime == 0) ? false : get_transient($cache_key);
-        if ($transient) {
-            $v = '<script>console.log("Building movie information from transient: '.$cache_key.'");</script>';
+        if (!F13_MOVIES_DEV && $transient) {
+            $v =  (F13_MOVIES_DEV) ? '<script>console.log("Building movie information from transient: '.$cache_key.'");</script>' : '';
             $v .= $transient;
 
             return $v;
@@ -190,7 +190,7 @@ class Control
             'api'         => $api,
         ));
 
-        $console = '<script>console.log("Building movie information from API, setting: '.$cache_key.'");</script>';
+        $console = (F13_MOVIES_DEV) ? '<script>console.log("Building movie information from API, setting: '.$cache_key.'");</script>' : '';
 
         $return = $v->movie_shortcode();
 

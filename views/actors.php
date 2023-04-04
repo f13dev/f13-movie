@@ -38,7 +38,7 @@ class Actors
             $v .= '<div class="f13-movies-actor-name">'.esc_attr($this->data->name).'</div>';
             $v .= '<div class="f13-movies-head">';
                 $v .= '<div class="f13-movies-actor-image">';
-                    $v .= '<img src="'.esc_url($this->local_image).'">';
+                    $v .= '<img src="'.esc_url($this->local_image).'" role="presentation" alt="'.esc_attr($this->data->name).'" aria-label="Actor: '.esc_attr($this->data->name).'" loading="lazy">';
                 $v .= '</div>';
 
                 $count = 0;
@@ -81,7 +81,7 @@ class Actors
 
             $v .= '<div class="f13-movies-powered-by-tmdb">';
                 $v .= '<a href="https://www.themoviedb.org/" target="_blank" title="'.$this->label_powered_by_tmdb.'">';
-                    $v .= '<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg">';
+                    $v .= '<img class="no-lightbox" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg">';
                 $v .= '</a>';
             $v .= '</div>';
 

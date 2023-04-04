@@ -3,7 +3,7 @@
 Plugin Name: F13 Movies
 Plugin URI: https://f13.dev/wordpress-plugins/wordpress-plugin-movies/
 Description: Display Movie, TV Show and Actor information on your blog with a shortcode
-Version: 2.1.0
+Version: 2.1.1
 Author: F13Dev
 Author URI: https://f13.dev
 Text Domain: f13-movies
@@ -15,6 +15,8 @@ if (!function_exists('get_plugins')) require_once(ABSPATH.'wp-admin/includes/plu
 if (!defined('F13_MOVIES')) define('F13_MOVIES', get_plugin_data(__FILE__, false, false));
 if (!defined('F13_MOVIES_PATH')) define('F13_MOVIES_PATH', plugin_dir_path( __FILE__ ));
 if (!defined('F13_MOVIES_URL')) define('F13_MOVIES_URL', plugin_dir_url(__FILE__));
+
+if (!defined('F13_MOVIES_DEV')) define('F13_MOVIES_DEV', false);
 
 $f13_movie_settings = array();
 
