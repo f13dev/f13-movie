@@ -80,6 +80,11 @@ A) Include the optional "disable" attribute, disable="plot,information"
 ![Actor Shortcode screenshot](screenshot-3.png)
 
 ## Changelog
+### 2.1.2
+* Improved error handling for TMDB API, if API returns an error, this is presented to the user
+* Notify user of success / error when saving admin settings
+* Fix: setting cachetime=0 in shortcode forces API call on every page load
+
 ### 2.1.1
 * Adding alt text to images
 * Setting TMDB logo as no-lightbox

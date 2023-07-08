@@ -65,7 +65,9 @@ class Control
             'cachetime'   => '1440',
         ), $atts));
 
-        $cachetime = $this->_check_cache($cachetime);
+        if ($cachetime > 0) {
+            $cachetime = $this->_check_cache($cachetime);
+        }
 
         $cache_key = 'f13-movies-actor-'.sha1(serialize($atts).F13_MOVIES['Version']);
         $transient = ($cachetime == 0) ? false : get_transient($cache_key);
@@ -131,8 +133,9 @@ class Control
 
         $disable = explode(',', $disable);
 
-        $cachetime = $this->_check_cache($cachetime);
-
+        if ($cachetime > 0) {
+            $cachetime = $this->_check_cache($cachetime);
+        } 
         $cache_key = 'f13-movies-'.sha1(serialize($atts).$settings['preferred_api'].F13_MOVIES['Version']);
         $transient = ($cachetime == 0) ? false : get_transient($cache_key);
         if (!F13_MOVIES_DEV && $transient) {

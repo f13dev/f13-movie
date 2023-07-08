@@ -45,6 +45,10 @@ class TMDB
         $url = '/3/search/multi?query='.urlencode($title);
         $results = $this->_call($url);
 
+        if (property_exists($results, 'success') && !$results->success && $results->status_message) {
+            return new \WP_Error('f13-movie', esc_attr($results->status_message));
+        }
+
         if ($results->results) {
             switch ($results->results[0]->media_type) {
                 case 'movie':

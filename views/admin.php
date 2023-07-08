@@ -88,6 +88,7 @@ class Admin
                 $v .= '<input type="hidden" name="action" value="update">';
                 $v .= '<input type="hidden" id="_wpnonce" name="_wpnonce" value="'.wp_create_nonce('f13-movies-settings-group-options').'">';
                 do_settings_sections('f13-movies-settings-group');
+                settings_errors();
                 $v .= '<table class="form-table">';
                 $v .= '<tr valign="top">';
                     $v .= '<th scope="row">'.$this->label_preferred_api.'</th>';
