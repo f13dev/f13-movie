@@ -149,6 +149,9 @@ class Control
             $plot = 'full';
         }
 
+        // Remove all non alphanumeric chars
+        $imdb = preg_replace("/[^A-Za-z0-9 ]/", '', $imdb);
+
         if ($api == 'omdb') {
             $m = new \F13\Movies\Models\OMDB();
             $data = $m->retrieve_movie_data(array(

@@ -80,6 +80,9 @@ A) Include the optional "disable" attribute, disable="plot,information"
 ![Actor Shortcode screenshot](screenshot-3.png)
 
 ## Changelog
+### 2.1.4
+* Fix removing all non alphanumeric characters from IMDB ID
+
 ### 2.1.3
 * Fix instructions for TMDB API, Read Access Token is required, not API Key
 

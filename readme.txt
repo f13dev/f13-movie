@@ -4,7 +4,7 @@ Donate link: http://f13dev.com/wordpress-plugin-movie-shortcode/
 Tags: movie, tv show, episode, embed, shortcode, imdb, omdb
 Requires at least: 3.0.1
 Tested up to: 6.2
-Stable tag: 2.1.2
+Stable tag: 2.1.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -80,6 +80,9 @@ Include the optional "disable" attribute, disable="plot,information"
 1. The results of adding [movie imdb="tt0480249"] to a blog post.
 
 == Changelog ==
+= 2.1.4 =
+* Fix removing all non alphanumeric characters from IMDB ID
+
 = 2.1.3 =
 * Fix instructions for TMDB API, Read Access Token is required, not API Key
 
