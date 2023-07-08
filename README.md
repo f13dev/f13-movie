@@ -80,6 +80,9 @@ A) Include the optional "disable" attribute, disable="plot,information"
 ![Actor Shortcode screenshot](screenshot-3.png)
 
 ## Changelog
+### 2.1.3
+* Fix instructions for TMDB API, Read Access Token is required, not API Key
+
 ### 2.1.2
 * Improved error handling for TMDB API, if API returns an error, this is presented to the user
 * Notify user of success / error when saving admin settings
