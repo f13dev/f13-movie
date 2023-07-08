@@ -9,6 +9,7 @@ class Admin
     public $label_by_imdb;
     public $label_by_title_year;
     public $label_copy_paste_key;
+    public $label_copy_paste_rat;
     public $label_f13_movie_settings;
     public $label_fill_in_form;
     public $label_obtain_omdb_api;
@@ -16,6 +17,7 @@ class Admin
     public $label_open_movie_database;
     public $label_plugins_by_f13;
     public $label_preferred_api;
+    public $label_read_access_token;
     public $label_requires_omdb_api;
     public $label_the_movie_database;
     public $label_visit;
@@ -32,6 +34,7 @@ class Admin
         $this->label_by_imdb                = __('Adding a movie by the IMDB ID', 'f13-movies');
         $this->label_by_title_year          = __('Adding a movie by title and year', 'f13-movies');
         $this->label_copy_paste_key         = __('Copy and paste your API Key to the field below.', 'f13-movies');
+        $this->label_copy_paste_rat         = __('Copy and paste your Read Access Token to the field below.', 'f13-movies');
         $this->label_f13_movie_settings     = __('F13 Movie Settings', 'f13-movies');
         $this->label_fill_in_form           = __('Fill in the form to apply for a FREE API key', 'f13-movies');
         $this->label_obtain_omdb_api        = __('To obtain an OMDB API key', 'f13-movies');
@@ -40,6 +43,7 @@ class Admin
         $this->label_plugins_by_f13         = __('Plugins by F13', 'f13-movies');
         $this->label_preferred_api          = __('Preferred API', 'f13-movies');
         $this->label_the_movie_database     = __('The Movie Database', 'f13-movies');
+        $this->label_read_access_token      = __('Read Access Token', 'f13-movies');
         $this->label_requires_omdb_api      = __('This plugin requires an OMDB API key to function', 'f13-movies');
         $this->label_visit                  = __('Visit', 'f13-movies');
         $this->label_welcome                = __('Welcome to the settings page for F13\'s Movies Shortcode.', 'f13-movies');
@@ -130,12 +134,12 @@ class Admin
                             $v .= '<ol>';
                                 $v .= '<li>'.__('Sign in / Register for an account at <a href="https://www.themoviedb.org/signup" target="_blank">The Movie Database</a>').'</li>';
                                 $v .= '<li>'.__('Complete the form to apply for an <a href="https://www.themoviedb.org/settings/api" target="_blank">api key</a>').'</li>';
-                                $v .= '<li>'.$this->label_copy_paste_key.'</li>';
+                                $v .= '<li>'.$this->label_copy_paste_rat.'</li>';
                             $v .= '</ol>';
                         $v .= '</td>';
                     $v .= '</tr>';
                     $v .= '<tr valign="top">';
-                        $v .= '<th scope="row">'.$this->label_api_key.'</th>';
+                        $v .= '<th scope="row">'.$this->label_read_access_token.'</th>';
                         $v .= '<td>';
                             $v .= '<input type="password" name="tmdb_api_key" value="'.esc_attr(get_option('tmdb_api_key')).'" style="width: 50%;">';
                         $v .= '</td>';
